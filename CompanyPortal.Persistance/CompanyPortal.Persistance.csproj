@@ -1,17 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CompanyPortal.Application.Abstractions\CompanyPortal.Application.Abstractions.csproj" />
     <ProjectReference Include="..\CompanyPortal.Application\CompanyPortal.Application.csproj" />
     <ProjectReference Include="..\CompanyPortal.Common\CompanyPortal.Common.csproj" />
+    <ProjectReference Include="..\CompanyPortal.Domain\CompanyPortal.Domain.csproj" />
     <ProjectReference Include="..\CompanyPortal.Infrastructure\CompanyPortal.Infrastructure.csproj" />
-    <ProjectReference Include="..\CompanyPortal.Persistance\CompanyPortal.Persistance.csproj" />
   </ItemGroup>
 
 </Project>
