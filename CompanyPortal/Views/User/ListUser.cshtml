@@ -1,0 +1,24 @@
+﻿@using CompanyPortal.Domain.Entities
+@model IEnumerable<AppUser>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th>Password</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Surname</td>
+                <td>@item.Email</td>
+                <td>@item.PasswordHash</td>
+            </tr>
+        }
+    </tbody>
+</table>
