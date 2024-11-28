@@ -70,6 +70,7 @@ namespace CompanyPortal.Persistance.Repositories
             Save();
             return result;
         }
+
         public bool UpdateRange(List<T> entities)
         {
             Table.UpdateRange(entities);

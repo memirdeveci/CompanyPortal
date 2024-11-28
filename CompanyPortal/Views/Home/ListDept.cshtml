@@ -1,0 +1,23 @@
+﻿@model IEnumerable<DepartmentDto>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Dept Name</th>
+            <th>Dept Code</th>
+            <th>Dept Desc</th>
+            <th>Dept Logo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DeptName</td>
+                <td>@item.DeptCode</td>
+                <td>@item.DeptDesc</td>
+                <td>@item.DeptLogo</td>
+            </tr>
+        }
+    </tbody>
+</table>

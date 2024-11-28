@@ -26,7 +26,7 @@ namespace CompanyPortal.Application.Department
         {
             if (department is null)
                 return false;
-
+            
             try
             {
                 var mappedResult = _mapper.Map<DepartmentDto, Domain.Entities.Department>(department);
