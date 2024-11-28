@@ -1,6 +1,7 @@
 using CompanyPortal.Application.Abstractions.Department;
 using CompanyPortal.Application.Abstractions.Department.Dtos;
 using CompanyPortal.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -27,19 +28,22 @@ namespace CompanyPortal.Controllers
             return View();
         }
 
-        public IActionResult ListDept()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ListDept()
         {
-            var depts = _deptService.GetAllDepartments();
+            var depts = await _deptService.GetAllDepartments();
             return View(depts);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateDept()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateDept(DepartmentDto deptDto)
         {
             if(ModelState.IsValid)

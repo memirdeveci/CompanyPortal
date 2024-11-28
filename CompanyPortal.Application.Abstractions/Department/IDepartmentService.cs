@@ -8,7 +8,7 @@ namespace CompanyPortal.Application.Abstractions.Department
         Task<bool> DeleteDepartment(Guid id);
         Task<bool> EditDepartment(DepartmentDto department);
         Task<DepartmentDto> GetDepartmentById(Guid id);
-        List<DepartmentDto> GetAllDepartments();
+        Task<List<DepartmentDto>> GetAllDepartments();
         Task<bool> SoftDeleteDepartment(Guid id);
     }
 }

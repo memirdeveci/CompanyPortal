@@ -2,6 +2,7 @@
 using CompanyPortal.Application.Abstractions.Post;
 using CompanyPortal.Application.Abstractions.Post.Dtos;
 using CompanyPortal.Application.Abstractions.Repositories.Post;
+using Microsoft.EntityFrameworkCore;
 
 namespace CompanyPortal.Application.Post
 {
@@ -79,13 +80,13 @@ namespace CompanyPortal.Application.Post
             }
         }
 
-        public List<PostDto> GetAllPosts()
+        public async Task<List<PostDto>> GetAllPosts()
         {
             try
             {
-                var posts = _postReadRepository.GetQueryable()
-                                               .Where(x => x.Status)
-                                               .ToList();
+                var posts = await _postReadRepository.GetQueryable()
+                                                     .Where(x => x.Status)
+                                                     .ToListAsync();
 
                 if (posts is null)
                     return [];

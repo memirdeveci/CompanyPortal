@@ -1,5 +1,4 @@
-﻿@using CompanyPortal.Domain.Entities
-@model IEnumerable<AppUser>
+﻿@model IEnumerable<UserDto>
 
 <table class="table">
     <thead>
@@ -7,7 +6,7 @@
             <th>Name</th>
             <th>Surname</th>
             <th>Email</th>
-            <th>Password</th>
+            <th>UserName</th>
         </tr>
     </thead>
     <tbody>
@@ -17,7 +16,7 @@
                 <td>@item.Name</td>
                 <td>@item.Surname</td>
                 <td>@item.Email</td>
-                <td>@item.PasswordHash</td>
+                <td>@item.UserName</td>
             </tr>
         }
     </tbody>

@@ -8,7 +8,7 @@ namespace CompanyPortal.Application.Abstractions.Post
         Task<bool> DeletePost(Guid id);
         Task<bool> EditPost(PostDto post);
         Task<PostDto> GetPostById(Guid id);
-        List<PostDto> GetAllPosts();
+        Task<List<PostDto>> GetAllPosts();
         Task<bool> SoftDeletePost(Guid id);
     }
 }

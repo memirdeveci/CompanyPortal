@@ -1,20 +1,46 @@
-﻿using CompanyPortal.Application.Abstractions.User.Dtos;
-using CompanyPortal.Domain.Entities;
-using CompanyPortal.Persistance.DbContext;
-using Microsoft.AspNetCore.Identity;
+﻿using CompanyPortal.Application.Abstractions.User;
+using CompanyPortal.Application.Abstractions.User.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyPortal.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly AppDbContext _context;
+        private readonly IUserService _userService;
+        private readonly ILoginService _loginService;
 
-        public UserController(UserManager<AppUser> userManager, AppDbContext context) 
+        public UserController(IUserService userService, ILoginService loginService) 
         {
-            _userManager = userManager;
-            _context = context;
+            _userService = userService;
+            _loginService = loginService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(UserDto userDto)
+        {
+            if(!ModelState.IsValid) return View(userDto);
+
+            var result = await _loginService.Login(userDto);
+            var isAdmin = await _loginService.CheckRole(userDto.Email, "Admin");
+            if (result)
+            {
+                if (isAdmin)
+                    return RedirectToAction("AdminPanel", "User");
+                else
+                    return RedirectToAction("Index", "Home");
+            }
+           
+            return View();
         }
 
         [HttpGet]
@@ -26,22 +52,11 @@ namespace CompanyPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserDto userDto)
         {
-            //User daha önce eklenmiş mi diye kontrol etmek lazım
-
             if(ModelState.IsValid)
             {
-                AppUser appUser = new AppUser()
+                var response = await _userService.AddUser(userDto);
+                if (response)
                 {
-                    Id = Guid.NewGuid(),
-                    Name = userDto.Name,
-                    Surname = userDto.Surname,
-                    Email = userDto.Email
-                };
-                IdentityResult result = await _userManager.CreateAsync(appUser, userDto.Password);
-                if (result.Succeeded)
-                {
-                    _context.Update(appUser);
-                    _context.SaveChanges();
                     return RedirectToAction("ListUser", "User");
                 }
             }
@@ -49,10 +64,16 @@ namespace CompanyPortal.Controllers
         }
         
         [HttpGet]
-        public IActionResult ListUser()
+        public async Task<IActionResult> ListUser()
         {
-            var users = _userManager.Users.ToList();
+            var users = await _userService.GetAllUsers();
             return View(users);
+        }
+
+        public async Task<IActionResult> AdminPanel()
+        {
+            var admin = await _userService.GetAdmin(User);
+            return View(admin);
         }
     }
 }

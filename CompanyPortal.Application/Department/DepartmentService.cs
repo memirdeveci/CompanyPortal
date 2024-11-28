@@ -2,7 +2,7 @@
 using CompanyPortal.Application.Abstractions.Department;
 using CompanyPortal.Application.Abstractions.Department.Dtos;
 using CompanyPortal.Application.Abstractions.Repositories.Department;
-using CompanyPortal.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CompanyPortal.Application.Department
 {
@@ -80,13 +80,14 @@ namespace CompanyPortal.Application.Department
             }
         }
 
-        public List<DepartmentDto> GetAllDepartments()
+        public async Task<List<DepartmentDto>> GetAllDepartments()
         {
             try
             {
-                var departments = _departmentReadRepository.GetQueryable()
-                                                           .Where(x => x.Status)
-                                                           .ToList();
+                var departments = await _departmentReadRepository.GetQueryable()
+                                                                 .Where(x => x.Status)
+                                                                 .ToListAsync();
+                
                 if(departments is null)
                    return [];
 

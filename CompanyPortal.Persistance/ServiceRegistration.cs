@@ -2,8 +2,10 @@
 using CompanyPortal.Application.Abstractions.Post;
 using CompanyPortal.Application.Abstractions.Repositories.Department;
 using CompanyPortal.Application.Abstractions.Repositories.Post;
+using CompanyPortal.Application.Abstractions.User;
 using CompanyPortal.Application.Department;
 using CompanyPortal.Application.Post;
+using CompanyPortal.Application.User;
 using CompanyPortal.Domain.Entities;
 using CompanyPortal.Persistance.DbContext;
 using CompanyPortal.Persistance.Repositories.Department;
@@ -35,6 +37,10 @@ namespace CompanyPortal.Persistance
             services.AddScoped<IPostReadRepository, PostReadRepository>();
             services.AddScoped<IPostWriteRepository, PostWriteRepository>();
             services.AddScoped<IPostService, PostService>();
+
+            //User-Login
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILoginService, LoginService>();
         }
     }
 }
