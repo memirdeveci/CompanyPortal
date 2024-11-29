@@ -1,0 +1,78 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+.edit-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.edit-header {
+    background-color: #4a90e2;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+}
+
+    .edit-header h1 {
+        margin: 0;
+        font-size: 24px;
+    }
+
+.edit-form {
+    padding: 20px;
+}
+
+    .edit-form label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .edit-form input,
+    .edit-form select,
+    .edit-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .edit-form textarea {
+        resize: none;
+    }
+
+    .edit-form button {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+        .edit-form button:hover {
+            background-color: #3a78c4;
+        }
+
+.cancel-btn {
+    background-color: #ccc;
+    color: #333;
+    margin-left: 10px;
+}
+
+    .cancel-btn:hover {
+        background-color: #b3b3b3;
+    }

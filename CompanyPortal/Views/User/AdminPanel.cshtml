@@ -1,35 +1,21 @@
 ﻿@model AdminDto
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>UserName</th>
-        </tr>
-    </thead>
-    <tbody>
-            <tr>
-                <td>@Model.Name</td>
-                <td>@Model.Surname</td>
-                <td>@Model.UserName</td>
-            </tr>
-    </tbody>
-</table>
+<link href="~/css/StyleSheet.css" rel="stylesheet" />
+@{
+    Layout = null;
+}
 
-<br>
-<br>
-<br>
-<br>
-<a asp-action="CreateUser" asp-controller="User" class="Button">Create User</a>
-<br>
-<br>
-<a asp-action="ListUser" asp-controller="User" class="Button">List Users</a>
-<br>
-<br>
-<a asp-action="CreateDept" asp-controller="Home" class="Button">Create Department</a>
-<br>
-<br>
-<a asp-action="ListDept" asp-controller="Home" class="Button">List Departments</a>
-<br>
-<br>
+<div class="container">
+    <div class="profile">
+        <img src="https://via.placeholder.com/100" alt="Profile Photo">
+        <p>Name: @Model.Name</p>
+        <p>Surname: @Model.Surname</p>
+        <p>Username: @Model.UserName</p>
+    </div>
+    <div class="actions">
+        <button>List Departments</button>
+        <button>Create Departments</button>
+        <button>List Users</button>
+        <button>Create Users</button>
+    </div>
+</div>

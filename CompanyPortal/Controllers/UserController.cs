@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyPortal.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -37,19 +36,21 @@ namespace CompanyPortal.Controllers
                 if (isAdmin)
                     return RedirectToAction("AdminPanel", "User");
                 else
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Profile", "User");
             }
            
             return View();
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateUser()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateUser(UserDto userDto)
         {
             if(ModelState.IsValid)
@@ -64,16 +65,46 @@ namespace CompanyPortal.Controllers
         }
         
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ListUser()
         {
             var users = await _userService.GetAllUsers();
             return View(users);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminPanel()
         {
             var admin = await _userService.GetAdmin(User);
             return View(admin);
+        }
+
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userService.GetProfile(User);
+            return View(user);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> EditProfile()
+        {
+            var user = await _userService.GetProfile(User);
+            return View(user); 
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> EditProfile(ProfileDto profileDto)
+        {
+            if(ModelState.IsValid)
+            {
+                var response = await _userService.EditUser(profileDto);
+                if (response)
+                    return RedirectToAction("Profile", "User");
+            }
+            return View();
         }
     }
 }

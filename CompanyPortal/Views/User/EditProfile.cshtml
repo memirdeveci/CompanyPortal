@@ -1,0 +1,36 @@
+﻿@model ProfileDto
+
+<link href="~/css/EditProfile.css" rel="stylesheet" />
+
+<div class="edit-container">
+    <div class="edit-header">
+        <h1>Edit Profile</h1>
+    </div>
+    <form class="edit-form" asp-action="EditProfile" method="post">
+        <input type="hidden" asp-for="Email" value="@Model.Email">
+
+        <label asp-for="ProfilePhoto">Profile Picture</label>
+        <input type="text" id="profile-photo" asp-for="ProfilePhoto">
+
+        <label asp-for="UserName">Username</label>
+        <input type="text" id="full-name" asp-for="UserName" value="@Model.UserName">
+
+        <label asp-for="BirthDate">Birth Date</label>
+        <input type="date" id="birth-date" asp-for="BirthDate" value="@Model.BirthDate.ToString("d")">
+
+        <label asp-for="Gender">Gender</label>
+        <select id="gender" asp-for="Gender">
+            <option value="Male" selected>Erkek</option>
+            <option value="Female">Kadın</option>
+        </select>
+
+        <!--<label asp-for="City">City</label>
+        <input type="text" id="location" asp-for="City" value="Model.City">
+
+        <label asp-for="Education">Education</label>
+        <input type="text" id="profession" asp-for="Education" value="Model.Education">--->
+
+        <button type="submit">Kaydet</button>
+        <button type="button" class="cancel-btn" asp-action="Profile" asp-controller="User">İptal</button>
+    </form>
+</div>

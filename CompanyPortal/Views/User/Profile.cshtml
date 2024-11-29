@@ -1,0 +1,22 @@
+﻿@model ProfileDto
+
+<link href="~/css/Profile.css" rel="stylesheet" />
+
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="https://via.placeholder.com/200" alt="Profile Picture">
+        <h1>@Model.Name @Model.Surname</h1>
+        <h3>Human Resources</h3>
+        <p>Manager</p>
+        <button class="edit-profile-btn">Edit Profile</button>
+    </div>
+    <div class="profile-body">
+        <h2>About Me</h2>
+        <ul class="profile-info">
+            <li><span>Birth Date:</span>@Model.BirthDate.ToString("d")</li>
+            <li><span>Gender:</span>@Model.Gender.ToString()</li>
+            <li><span>City:</span>Kocaeli</li>
+            <li><span>Education:</span>Sakarya Üniversitesi</li>
+        </ul>
+    </div>
+</div>

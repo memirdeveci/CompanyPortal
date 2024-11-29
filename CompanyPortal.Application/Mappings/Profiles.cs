@@ -13,6 +13,7 @@ namespace CompanyPortal.Application.Mappings
             CreateMap<Domain.Entities.Post, PostDto>().ReverseMap();
             CreateMap<Domain.Entities.AppUser, UserDto>().ReverseMap();
             CreateMap<Domain.Entities.AppUser, AdminDto>().ReverseMap();
+            CreateMap<Domain.Entities.AppUser, ProfileDto>().ReverseMap();
         }
     }
 }

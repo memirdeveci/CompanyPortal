@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using CompanyPortal.Application.Abstractions.Department.Dtos;
-using CompanyPortal.Application.Abstractions.Repositories.Department;
 using CompanyPortal.Application.Abstractions.User;
 using CompanyPortal.Application.Abstractions.User.Dtos;
 using CompanyPortal.Domain.Entities;
@@ -63,21 +61,24 @@ namespace CompanyPortal.Application.User
             }
         }
 
-        public async Task<bool> EditUser(UserDto user)
+        public async Task<bool> EditUser(ProfileDto user)
         {
             if (user is null)
                 return false;
 
             try
             {
-                var userEntity = await _userManager.FindByIdAsync(user.Id.ToString());
+                var userEntity = await _userManager.FindByEmailAsync(user.Email);
 
                 if (userEntity is null)
                     return false;
 
-                var updateEntity = _mapper.Map<UserDto, AppUser>(user);
+                userEntity.Gender = user.Gender;
+                userEntity.ProfilePhoto = user.ProfilePhoto;
+                userEntity.UserName = user.UserName;
+                userEntity.BirthDate = user.BirthDate;
 
-                var response = await _userManager.UpdateAsync(updateEntity);
+                var response = await _userManager.UpdateAsync(userEntity);
 
                 return response.Succeeded;
             }
@@ -149,6 +150,25 @@ namespace CompanyPortal.Application.User
             catch (Exception)
             {
                 return new AdminDto();
+            }
+        }
+
+        public async Task<ProfileDto> GetProfile(ClaimsPrincipal principal)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(principal);
+
+                if (user is null)
+                    throw new Exception();
+
+                var mappedResult = _mapper.Map<AppUser, ProfileDto>(user);
+
+                return mappedResult;
+            }
+            catch (Exception)
+            {
+                return new ProfileDto();
             }
         }
     }
