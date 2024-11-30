@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace CompanyPortal.Persistance.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class Zeki : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -100,10 +100,12 @@ namespace CompanyPortal.Persistance.Migrations
                     ProfilePhoto = table.Column<string>(type: "longtext", nullable: true),
                     CoverPhoto = table.Column<string>(type: "longtext", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    City = table.Column<string>(type: "longtext", nullable: true),
+                    Education = table.Column<string>(type: "longtext", nullable: true),
+                    Position = table.Column<string>(type: "longtext", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    DeptId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "char(36)", nullable: true),
+                    DepartmentId = table.Column<Guid>(type: "char(36)", nullable: false),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
@@ -126,7 +128,8 @@ namespace CompanyPortal.Persistance.Migrations
                         name: "FK_AspNetUsers_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 

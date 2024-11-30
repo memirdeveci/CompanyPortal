@@ -13,5 +13,9 @@ namespace CompanyPortal.Application.Abstractions.User.Dtos
         public string? ProfilePhoto { get; set; }
         public string? CoverPhoto { get; set; }
         public DateTime BirthDate { get; set; }
+        public string? Position { get; set; }
+        public string? City { get; set; }
+        public string? Education { get; set; }
+        public string? DepartmentName { get; set; }
     }
 }

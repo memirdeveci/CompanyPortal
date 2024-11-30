@@ -13,5 +13,14 @@
     <input type="text" asp-for="Password" placeholder="Password" required="">
     <br>
     <br>
+    <label asp-for="DepartmentId" class="control-label">Select Department</label>
+    <select asp-for="DepartmentId" asp-items="@Model.DepartmentList" class="form-control">
+        <option value="">-- Please Select --</option> 
+    </select>
+    <br>
+    <br>
+    <input type="text" asp-for="Position" placeholder="Position" required="">
+    <br>
+    <br>
     <input type="submit" value="Kaydet">
 </form>

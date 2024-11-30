@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CompanyPortal.Application.Abstractions.Department;
 using CompanyPortal.Application.Abstractions.User;
 using CompanyPortal.Application.Abstractions.User.Dtos;
 using CompanyPortal.Domain.Entities;
@@ -12,11 +13,13 @@ namespace CompanyPortal.Application.User
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly IDepartmentService _deptService;
 
-        public UserService(UserManager<AppUser> userManager, IMapper mapper) 
+        public UserService(UserManager<AppUser> userManager, IMapper mapper, IDepartmentService deptService) 
         {
             _userManager = userManager;
             _mapper = mapper;
+            _deptService = deptService;
         }
 
         public async Task<bool> AddUser(UserDto user)
@@ -32,7 +35,9 @@ namespace CompanyPortal.Application.User
 
                 var response = await _userManager.CreateAsync(mappedResult, user.Password);
 
-                return response.Succeeded;
+                var result = await _userManager.AddToRoleAsync(mappedResult, "Employee");
+
+                return response.Succeeded && result.Succeeded;
             }
             catch (Exception) 
             {
@@ -72,13 +77,10 @@ namespace CompanyPortal.Application.User
 
                 if (userEntity is null)
                     return false;
-
-                userEntity.Gender = user.Gender;
-                userEntity.ProfilePhoto = user.ProfilePhoto;
-                userEntity.UserName = user.UserName;
-                userEntity.BirthDate = user.BirthDate;
-
-                var response = await _userManager.UpdateAsync(userEntity);
+              
+                user.Id = userEntity.Id;
+                var mapResult = _mapper.Map(user, userEntity);
+                var response = await _userManager.UpdateAsync(mapResult);
 
                 return response.Succeeded;
             }
@@ -163,6 +165,8 @@ namespace CompanyPortal.Application.User
                     throw new Exception();
 
                 var mappedResult = _mapper.Map<AppUser, ProfileDto>(user);
+                var dept = await _deptService.GetDepartmentById(user.DepartmentId);
+                mappedResult.DepartmentName = dept.DeptName;
 
                 return mappedResult;
             }

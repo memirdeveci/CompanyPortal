@@ -8,15 +8,16 @@
     </div>
     <form class="edit-form" asp-action="EditProfile" method="post">
         <input type="hidden" asp-for="Email" value="@Model.Email">
-
+        <input type="hidden" asp-for="DepartmentName" value="@Model.DepartmentName">
+        
         <label asp-for="ProfilePhoto">Profile Picture</label>
-        <input type="text" id="profile-photo" asp-for="ProfilePhoto">
+        <input type="text" id="profile-photo" asp-for="ProfilePhoto" required>
 
         <label asp-for="UserName">Username</label>
-        <input type="text" id="full-name" asp-for="UserName" value="@Model.UserName">
+        <input type="text" id="full-name" asp-for="UserName" value="@Model.UserName" required>
 
         <label asp-for="BirthDate">Birth Date</label>
-        <input type="date" id="birth-date" asp-for="BirthDate" value="@Model.BirthDate.ToString("d")">
+        <input type="date" id="birth-date" asp-for="BirthDate" value="@Model.BirthDate">
 
         <label asp-for="Gender">Gender</label>
         <select id="gender" asp-for="Gender">
@@ -24,11 +25,11 @@
             <option value="Female">Kadın</option>
         </select>
 
-        <!--<label asp-for="City">City</label>
-        <input type="text" id="location" asp-for="City" value="Model.City">
+        <label asp-for="City">City</label>
+        <input type="text" id="location" asp-for="City" value="@Model.City">
 
         <label asp-for="Education">Education</label>
-        <input type="text" id="profession" asp-for="Education" value="Model.Education">--->
+        <input type="text" id="profession" asp-for="Education" value="@Model.Education">
 
         <button type="submit">Kaydet</button>
         <button type="button" class="cancel-btn" asp-action="Profile" asp-controller="User">İptal</button>

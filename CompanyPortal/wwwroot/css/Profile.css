@@ -22,6 +22,10 @@
     text-align: center;
 }
 
+.profile-header a{
+    text-decoration : none;
+}
+
     .profile-header img {
         width: 200px;
         height: 200px;
@@ -65,7 +69,6 @@
 }
 
 
-
 .profile-info li {
     margin-bottom: 10px;
     font-size: 16px;
@@ -76,18 +79,4 @@
     font-weight: bold;
 }
 
-.contact-info {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.contact-info a {
-    color: #4a90e2;
-    text-decoration: none;
-    margin: 0 10px;
-}
-
-.contact-info a:hover {
-    text-decoration: underline;
-}
 

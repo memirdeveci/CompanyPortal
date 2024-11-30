@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanyPortal.Persistance.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241114170057_first")]
-    partial class first
+    [Migration("20241130142703_Zeki")]
+    partial class Zeki
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,9 @@ namespace CompanyPortal.Persistance.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("City")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
@@ -95,11 +98,11 @@ namespace CompanyPortal.Persistance.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("DepartmentId")
+                    b.Property<Guid>("DepartmentId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("DeptId")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("Education")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -136,6 +139,9 @@ namespace CompanyPortal.Persistance.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Position")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("longtext");
@@ -493,7 +499,9 @@ namespace CompanyPortal.Persistance.Migrations
                 {
                     b.HasOne("CompanyPortal.Domain.Entities.Department", "Department")
                         .WithMany("Users")
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Department");
                 });
@@ -507,7 +515,7 @@ namespace CompanyPortal.Persistance.Migrations
                         .IsRequired();
 
                     b.HasOne("CompanyPortal.Domain.Entities.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Messages")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -630,6 +638,8 @@ namespace CompanyPortal.Persistance.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
+
+                    b.Navigation("Messages");
 
                     b.Navigation("Posts");
                 });

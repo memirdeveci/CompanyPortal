@@ -13,9 +13,9 @@
         <p>Username: @Model.UserName</p>
     </div>
     <div class="actions">
-        <button>List Departments</button>
-        <button>Create Departments</button>
-        <button>List Users</button>
-        <button>Create Users</button>
+        <a asp-action="ListDept" asp-controller="Home">List Departments</a>
+        <a asp-action="CreateDept" asp-controller="Home">Create Departments</a>
+        <a asp-action="ListUser" asp-controller="User">List Users</a>
+        <a asp-action ="CreateUser" asp-controller="User">Create Users</a>
     </div>
 </div>

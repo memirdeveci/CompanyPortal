@@ -1,7 +1,9 @@
-﻿using CompanyPortal.Application.Abstractions.User;
+﻿using CompanyPortal.Application.Abstractions.Department;
+using CompanyPortal.Application.Abstractions.User;
 using CompanyPortal.Application.Abstractions.User.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CompanyPortal.Controllers
 {
@@ -9,11 +11,13 @@ namespace CompanyPortal.Controllers
     {
         private readonly IUserService _userService;
         private readonly ILoginService _loginService;
+        private readonly IDepartmentService _deptService;
 
-        public UserController(IUserService userService, ILoginService loginService) 
+        public UserController(IUserService userService, ILoginService loginService, IDepartmentService deptService) 
         {
             _userService = userService;
             _loginService = loginService;
+            _deptService = deptService;
         }
 
         [HttpGet]
@@ -44,9 +48,17 @@ namespace CompanyPortal.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateUser()
+        public async Task<IActionResult> CreateUser()
         {
-            return View();
+            var depts = await _deptService.GetAllDepartments();
+            var items = depts.Select(x => new SelectListItem(){Text = x.DeptName, Value = x.Id.ToString()});
+           
+            UserDto newUserDto = new()
+            {
+                DepartmentList = items.ToList(),
+            };
+
+            return View(newUserDto);
         }
 
         [HttpPost]
