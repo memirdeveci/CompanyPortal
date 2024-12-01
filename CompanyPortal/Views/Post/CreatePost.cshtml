@@ -1,0 +1,17 @@
+﻿@model PostDto
+
+<form asp-action="CreatePost" asp-controller="Post" method="post">
+    <input type="text" asp-for="Header" placeholder="Header" required="">
+    <br>
+    <br>
+    <input type="text" asp-for="Text" placeholder="Text" required="">
+    <br>
+    <br>
+    <input type="text" asp-for="ImageUrl" placeholder="ImageUrl" required="">
+    <br>
+    <br>
+    <input type="text" asp-for="VideoUrl" placeholder="VideoUrl" required="">
+    <br>
+    <br>
+    <input type="submit" value="Kaydet">
+</form>

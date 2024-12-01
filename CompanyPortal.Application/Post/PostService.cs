@@ -2,7 +2,10 @@
 using CompanyPortal.Application.Abstractions.Post;
 using CompanyPortal.Application.Abstractions.Post.Dtos;
 using CompanyPortal.Application.Abstractions.Repositories.Post;
+using CompanyPortal.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CompanyPortal.Application.Post
 {
@@ -10,27 +13,34 @@ namespace CompanyPortal.Application.Post
     {
         private readonly IPostReadRepository _postReadRepository;
         private readonly IPostWriteRepository _postWriteRepository;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
         public PostService(
             IPostReadRepository postReadRepository,
             IPostWriteRepository postWriteRepository,
+            UserManager<AppUser> userManager,
             IMapper mapper)
         {
             _postReadRepository = postReadRepository;
             _postWriteRepository = postWriteRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
-        public async Task<bool> AddPost(PostDto post)
+        public async Task<bool> AddPost(PostDto post, ClaimsPrincipal principal)
         {
             if (post is null)
                 return false;
 
             try
             {
+                var user = await _userManager.GetUserAsync(principal);
+
                 var mappedResult = _mapper.Map<PostDto, Domain.Entities.Post>(post);
-                
+
+                mappedResult.User = user;
+
                 var response = await _postWriteRepository.AddAsync(mappedResult);
                 
                 return response;
@@ -68,7 +78,7 @@ namespace CompanyPortal.Application.Post
                 if (postEntity is null)
                     return false;
 
-                var updateEntity = _mapper.Map<PostDto, Domain.Entities.Post>(post);
+                var updateEntity = _mapper.Map(post, postEntity);
 
                 var response = _postWriteRepository.Update(updateEntity);
 
@@ -85,6 +95,7 @@ namespace CompanyPortal.Application.Post
             try
             {
                 var posts = await _postReadRepository.GetQueryable()
+                                                     .Include(x => x.User)
                                                      .Where(x => x.Status)
                                                      .ToListAsync();
 

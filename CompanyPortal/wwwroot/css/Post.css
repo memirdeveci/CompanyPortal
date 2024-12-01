@@ -1,0 +1,129 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+.post-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #ccc;
+    margin-right: 10px;
+}
+
+.user-details {
+    font-size: 0.9em;
+    color: #555;
+}
+
+    .user-details p {
+        margin: 0;
+    }
+
+
+    .post-header h1 {
+        font-size: 1.5em;
+        margin: 0;
+        color: #333;
+    }
+
+.post-content {
+    text-align: center;
+    margin: 20px 0;
+}
+
+    .post-content img {
+        max-width: 100%;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .post-content p {
+        font-size: 1.1em;
+        color: #555;
+        line-height: 1.5;
+    }
+
+.post-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.post-stat {
+    text-align: center;
+    font-size: 0.9em;
+    color: #666;
+}
+
+    .post-stat strong {
+        display: block;
+        font-size: 1.2em;
+        color: #333;
+    }
+
+.post-comments {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+    .post-comments h3 {
+        font-size: 1.1em;
+        color: #444;
+        margin-bottom: 10px;
+    }
+
+    .post-comments ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        .post-comments ul li {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+            .post-comments ul li strong {
+                color: #333;
+            }
+.user-info {
+    position: relative;
+}
+
+.post-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 12px;
+}
+
+.delete-action a {
+    color: #ff4d4d;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+    .delete-action a:hover {
+        color: #e60000;
+    }

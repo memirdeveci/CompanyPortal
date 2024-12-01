@@ -1,0 +1,68 @@
+﻿@model List<PostDto>
+
+<link href="~/css/Post.css" rel="stylesheet"/>
+
+<h1>Posts</h1>
+
+@foreach (var post in Model)
+{
+    <div class="post-container">
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <div class="user-details">
+                <p><strong>@post.User?.UserName</strong></p>
+                <p>@post.EditedDate.ToString("MMMM dd, yyyy")</p>
+                <div class="post-actions">
+                    <div class="delete-action">
+                        <form asp-action="DeletePost" asp-controller="Post" method="post">
+                            <input type="hidden" name="Id" value="@post.Id">
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post-header">
+            <h1>@post.Header</h1>
+        </div>
+
+        <div class="post-content">
+            @if (!string.IsNullOrEmpty(post.ImageUrl))
+            {
+                <img src="@post.ImageUrl" alt="Post Image" />
+            }
+            <p>@post.Text</p>
+        </div>
+
+        <div class="post-stats">
+            <div class="post-stat">
+                <strong>@post.LikeCount</strong>
+                Likes
+            </div>
+            <div class="post-stat">
+                <strong>@post.DislikeCount</strong>
+                Dislikes
+            </div>
+            <div class="post-stat">
+                <strong>@post.CommentCount</strong>
+                Comments
+            </div>
+        </div>
+
+        @if (post.Comments != null && post.Comments.Any())
+        {
+            <div class="post-comments">
+                <h3>Comments</h3>
+                <ul>
+                    @foreach (var comment in post.Comments)
+                    {
+                        <li>
+                            <strong>@comment.User?.UserName:</strong> @comment.Text
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+}

@@ -1,9 +1,23 @@
 ﻿using CompanyPortal.Application.Abstractions.Base;
+using CompanyPortal.Domain.Entities;
 
 namespace CompanyPortal.Application.Abstractions.Post.Dtos
 {
     public class PostDto : BaseDto
     {
-        //İçi doldurulucak
+        public string? Header { get; set; }
+        public string? Text { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? VideoUrl { get; set; }  //??
+        public DateTime EditedDate { get; set; }
+        public int LikeCount { get; set; } = 0;
+        public int DislikeCount { get; set; } = 0;
+        public int CommentCount { get; set; } = 0;
+
+        //Connections
+        public Guid UserId { get; set; }
+        public AppUser? User { get; set; }
+        public ICollection<Comment>? Comments { get; set; }
+        public ICollection<Like>? Likes { get; set; }
     }
 }
