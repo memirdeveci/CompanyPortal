@@ -1,14 +1,22 @@
-﻿using CompanyPortal.Application.Abstractions.Department;
+﻿using CompanyPortal.Application.Abstractions.Comment;
+using CompanyPortal.Application.Abstractions.Department;
+using CompanyPortal.Application.Abstractions.Like;
 using CompanyPortal.Application.Abstractions.Post;
+using CompanyPortal.Application.Abstractions.Repositories.Comment;
 using CompanyPortal.Application.Abstractions.Repositories.Department;
+using CompanyPortal.Application.Abstractions.Repositories.Like;
 using CompanyPortal.Application.Abstractions.Repositories.Post;
 using CompanyPortal.Application.Abstractions.User;
+using CompanyPortal.Application.Comment;
 using CompanyPortal.Application.Department;
+using CompanyPortal.Application.Like;
 using CompanyPortal.Application.Post;
 using CompanyPortal.Application.User;
 using CompanyPortal.Domain.Entities;
 using CompanyPortal.Persistance.DbContext;
+using CompanyPortal.Persistance.Repositories.Comment;
 using CompanyPortal.Persistance.Repositories.Department;
+using CompanyPortal.Persistance.Repositories.Like;
 using CompanyPortal.Persistance.Repositories.Post;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -41,6 +49,16 @@ namespace CompanyPortal.Persistance
             //User-Login
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILoginService, LoginService>();
+
+            //Comment
+            services.AddScoped<ICommentReadRepository, CommentReadRepository>();
+            services.AddScoped<ICommentWriteRepository, CommentWriteRepository>();
+            services.AddScoped<ICommentService, CommentService>();
+
+            //Like
+            services.AddScoped<ILikeReadRepository, LikeReadRepository>();
+            services.AddScoped<ILikeWriteRepository, LikeWriteRepository>();
+            services.AddScoped<ILikeService, LikeService>();
         }
     }
 }

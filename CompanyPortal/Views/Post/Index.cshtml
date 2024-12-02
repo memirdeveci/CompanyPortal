@@ -6,6 +6,9 @@
 
 @foreach (var post in Model)
 {
+
+    var divCount = Model.IndexOf(post);
+ 
     <div class="post-container">
         <div class="user-info">
             <div class="user-avatar"></div>
@@ -37,8 +40,8 @@
 
         <div class="post-stats">
             <div class="post-stat">
-                <strong>@post.LikeCount</strong>
-                Likes
+                <strong id="divCount_@divCount">@post.LikeCount</strong>
+                <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','L','@divCount')" title="Beğendim">
             </div>
             <div class="post-stat">
                 <strong>@post.DislikeCount</strong>
@@ -66,3 +69,33 @@
         }
     </div>
 }
+
+
+<script>
+    function fnPostLike(post, type, divCount) {
+        $.ajax({
+            url: "/Like/AddLike",
+            method: 'POST',
+            data: {
+                "LikeType": type,
+                "PostId" : post
+            },
+            success: function (response) {
+                if (!response.redirectUrl) {
+                    $("#likeCount_" + divCount).html(response.likeCount);
+                    $("#disLikeCount_" + divCount).html(response.dislikeCount);
+                    if (response.isLiked == true) $("#likeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-up-fill'></i>");
+                    else if (response.isDisliked == true) $("#dislikeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-down-fill'></i>");
+                    if (response.isLiked == false) $("#likeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-up'></i>");
+                    if (response.isDisliked == false) $("#dislikeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-down'></i>");
+                }
+                else {
+                    window.location.href = window.location.origin + response.redirectUrl;
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log("asdasd");
+            }
+        });
+    }
+</script>
