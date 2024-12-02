@@ -1,13 +1,13 @@
 ﻿@model PostDto
 
-<form asp-action="CreatePost" asp-controller="Post" method="post">
+<form asp-action="CreatePost" asp-controller="Post" method="post" enctype="multipart/form-data">
     <input type="text" asp-for="Header" placeholder="Header" required="">
     <br>
     <br>
     <input type="text" asp-for="Text" placeholder="Text" required="">
     <br>
     <br>
-    <input type="text" asp-for="ImageUrl" placeholder="ImageUrl" required="">
+    <input type="file" asp-for="Image" placeholder="Image">
     <br>
     <br>
     <input type="text" asp-for="VideoUrl" placeholder="VideoUrl" required="">

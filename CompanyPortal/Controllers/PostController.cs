@@ -1,5 +1,7 @@
 ﻿using CompanyPortal.Application.Abstractions.Post;
 using CompanyPortal.Application.Abstractions.Post.Dtos;
+using CompanyPortal.ExternalServices;
+using CompanyPortal.ExternalServices.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +11,12 @@ namespace CompanyPortal.Controllers
     public class PostController : Controller
     {
         private readonly IPostService _postService;
-        public PostController(IPostService postService)
+        private readonly IPhotoService _photoService;
+
+        public PostController(IPostService postService, IPhotoService photoService)
         {
             _postService = postService;
+            _photoService = photoService;
         }
         public async Task<IActionResult> Index()
         {
@@ -28,6 +33,10 @@ namespace CompanyPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(PostDto post)
         {
+            var imageResult = await _photoService.AddPhotoAsync(post.Image);
+
+            post.ImageUrl = imageResult.Url.ToString();
+
             await _postService.AddPost(post, User);
 
             return RedirectToAction("Index");

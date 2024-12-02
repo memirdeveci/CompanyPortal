@@ -1,11 +1,16 @@
+using CompanyPortal.ExternalServices;
+using CompanyPortal.ExternalServices.ExternalServiceModels;
+using CompanyPortal.ExternalServices.Interfaces;
 using CompanyPortal.Persistance;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddControllersWithViews();
 builder.Services.AddRequiredServices(builder.Configuration);
-
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddScoped<IPhotoService, PhotoServices>();
 
 var app = builder.Build();
 
