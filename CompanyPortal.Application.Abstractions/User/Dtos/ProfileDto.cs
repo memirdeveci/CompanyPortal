@@ -1,5 +1,6 @@
 ﻿using CompanyPortal.Application.Abstractions.Base;
 using CompanyPortal.Common.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace CompanyPortal.Application.Abstractions.User.Dtos
 {
@@ -11,6 +12,7 @@ namespace CompanyPortal.Application.Abstractions.User.Dtos
         public string? Email { get; set; }
         public Gender Gender { get; set; }
         public string? ProfilePhoto { get; set; }
+        public IFormFile? ProfilePicture { get; set; }
         public string? CoverPhoto { get; set; }
         public DateTime BirthDate { get; set; }
         public string? Position { get; set; }

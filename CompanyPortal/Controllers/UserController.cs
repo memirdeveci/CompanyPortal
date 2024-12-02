@@ -1,6 +1,7 @@
 ﻿using CompanyPortal.Application.Abstractions.Department;
 using CompanyPortal.Application.Abstractions.User;
 using CompanyPortal.Application.Abstractions.User.Dtos;
+using CompanyPortal.ExternalServices.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,12 +13,14 @@ namespace CompanyPortal.Controllers
         private readonly IUserService _userService;
         private readonly ILoginService _loginService;
         private readonly IDepartmentService _deptService;
+        private readonly IPhotoService _photoService;
 
-        public UserController(IUserService userService, ILoginService loginService, IDepartmentService deptService) 
+        public UserController(IUserService userService, ILoginService loginService, IDepartmentService deptService, IPhotoService photoService) 
         {
             _userService = userService;
             _loginService = loginService;
             _deptService = deptService;
+            _photoService = photoService;
         }
 
         [HttpGet]
@@ -112,7 +115,13 @@ namespace CompanyPortal.Controllers
         {
             if(ModelState.IsValid)
             {
+                if (profileDto.ProfilePicture != null)
+                {
+                    var imageResult = await _photoService.AddPhotoAsync(profileDto.ProfilePicture);
+                    profileDto.ProfilePhoto = imageResult.Url.ToString();
+                }
                 var response = await _userService.EditUser(profileDto);
+
                 if (response)
                     return RedirectToAction("Profile", "User");
             }

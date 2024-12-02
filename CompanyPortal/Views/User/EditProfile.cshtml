@@ -6,18 +6,22 @@
     <div class="edit-header">
         <h1>Edit Profile</h1>
     </div>
-    <form class="edit-form" asp-action="EditProfile" method="post">
+    <form class="edit-form" asp-action="EditProfile" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="Email" value="@Model.Email">
         <input type="hidden" asp-for="DepartmentName" value="@Model.DepartmentName">
+        <input type="hidden" asp-for="Name" value="@Model.Name">
+        <input type="hidden" asp-for="Surname" value="@Model.Surname">
+        <input type="hidden" asp-for="ProfilePhoto" value="@Model.ProfilePhoto">
         
-        <label asp-for="ProfilePhoto">Profile Picture</label>
-        <input type="text" id="profile-photo" asp-for="ProfilePhoto" required>
 
+        <label asp-for="ProfilePicture">Profile Picture</label>
+        <input type="file" id="profile-photo" asp-for="ProfilePicture">
+        
         <label asp-for="UserName">Username</label>
         <input type="text" id="full-name" asp-for="UserName" value="@Model.UserName" required>
 
         <label asp-for="BirthDate">Birth Date</label>
-        <input type="date" id="birth-date" asp-for="BirthDate" value="@Model.BirthDate">
+        <input type="date" id="birth-date" asp-for="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")">
 
         <label asp-for="Gender">Gender</label>
         <select id="gender" asp-for="Gender">
