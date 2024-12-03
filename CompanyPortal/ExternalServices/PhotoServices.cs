@@ -2,7 +2,6 @@
 using CloudinaryDotNet.Actions;
 using CompanyPortal.ExternalServices.ExternalServiceModels;
 using CompanyPortal.ExternalServices.Interfaces;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 
 namespace CompanyPortal.ExternalServices
@@ -23,14 +22,14 @@ namespace CompanyPortal.ExternalServices
         public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)
         {
             var imageResult = new ImageUploadResult();
-
             try
             {
                 if (file.Length == 0) throw new Exception();
 
                 using var stream = file.OpenReadStream();
 
-                var uploadParams = new ImageUploadParams {
+                var uploadParams = new ImageUploadParams
+                {
                     File = new FileDescription(file.FileName, stream),
                     Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face")
                 };
@@ -50,6 +49,33 @@ namespace CompanyPortal.ExternalServices
             var publicId = publicUrl.Split('/').Last().Split('.')[0];
             var deleteParams = new DeletionParams(publicId);
             return await _cloudinary.DestroyAsync(deleteParams);
+        }
+
+        public async Task<VideoUploadResult> AddVideoAsync(IFormFile file)
+        {
+            var videoResult = new VideoUploadResult();
+            try
+            {
+                if (file.Length == 0) throw new Exception();
+
+                using var stream = file.OpenReadStream();
+                var uploadParams = new VideoUploadParams()
+                {
+                    File = new FileDescription(file.FileName, stream)
+                    /*Transformation = new Transformation().Height(500)
+                                                         .Width(500)
+                                                         .Crop("fill")
+                                                         .Gravity("auto")*/
+                };
+
+                videoResult = await _cloudinary.UploadAsync(uploadParams);
+
+                return videoResult;
+            }
+            catch (Exception)
+            {
+                return videoResult;
+            }
         }
     }
 }

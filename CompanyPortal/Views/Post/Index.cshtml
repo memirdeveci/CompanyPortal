@@ -33,7 +33,16 @@
         <div class="post-content">
             @if (!string.IsNullOrEmpty(post.ImageUrl))
             {
-                <img src="@post.ImageUrl" alt="Post Image" />
+                if (post.ContentType == "Video") {
+                    <video width="500" height="500" controls>
+                        <source src="@post.ImageUrl" type="video/mp4">
+                        Tarayıcınız video oynatmayı desteklemiyor.
+                    </video>
+                }
+                else
+                {
+                    <img src="@post.ImageUrl" alt="Post Image" />
+                }
             }
             <p>@post.Text</p>
         </div>

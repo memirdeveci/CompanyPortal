@@ -6,5 +6,6 @@ namespace CompanyPortal.ExternalServices.Interfaces
     {
         Task<ImageUploadResult> AddPhotoAsync(IFormFile file);
         Task<DeletionResult> DeletePhotoAsync(string publicUrl);
+        Task<VideoUploadResult> AddVideoAsync(IFormFile file);
     }
 }

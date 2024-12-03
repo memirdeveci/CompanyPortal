@@ -11,6 +11,6 @@ namespace CompanyPortal.Application.Abstractions.Like.Dtos
         public Guid PostId { get; set; }
         public Domain.Entities.Post? Post { get; set; }
         public Guid? CommentId { get; set; }
-        public Comment? Comment { get; set; }
+        public Domain.Entities.Comment? Comment { get; set; }
     }
 }

@@ -1,5 +1,7 @@
-﻿using CompanyPortal.Application.Abstractions.Post;
+﻿using CloudinaryDotNet.Actions;
+using CompanyPortal.Application.Abstractions.Post;
 using CompanyPortal.Application.Abstractions.Post.Dtos;
+using CompanyPortal.Domain.Entities;
 using CompanyPortal.ExternalServices;
 using CompanyPortal.ExternalServices.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -33,9 +35,7 @@ namespace CompanyPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(PostDto post)
         {
-            var imageResult = await _photoService.AddPhotoAsync(post.Image);
-
-            post.ImageUrl = imageResult.Url.ToString();
+            await PrepareContent(post);
 
             await _postService.AddPost(post, User);
 
@@ -49,5 +49,26 @@ namespace CompanyPortal.Controllers
 
             return RedirectToAction("Index");
         }
+
+        #region Utility
+        private async Task PrepareContent(PostDto post)
+        {
+            if (post.Image != null)
+            {
+                if (post.Image.ContentType.Contains("video"))
+                {
+                    var videoResult = await _photoService.AddVideoAsync(post.Image);
+                    post.ImageUrl = videoResult.Url.ToString();
+                    post.ContentType = nameof(ResourceType.Video);
+                }
+                else
+                {
+                    var imageResult = await _photoService.AddPhotoAsync(post.Image);
+                    post.ImageUrl = imageResult.Url.ToString();
+                    post.ContentType = nameof(ResourceType.Image);
+                }
+            }
+        }
+        #endregion
     }
 }

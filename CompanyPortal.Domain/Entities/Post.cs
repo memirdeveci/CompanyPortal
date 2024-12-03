@@ -7,6 +7,7 @@ namespace CompanyPortal.Domain.Entities
         public string? Header { get; set; }
         public string? Text { get; set; }
         public string? ImageUrl { get; set; }
+        public string? ContentType { get; set; }
         public string? VideoUrl { get; set; }  //??
         public DateTime EditedDate { get; set; }
         public int LikeCount { get; set; }

@@ -10,6 +10,7 @@ namespace CompanyPortal.Application.Abstractions.Post.Dtos
         public string? Text { get; set; }
         public string? ImageUrl { get; set; }
         public IFormFile? Image { get; set; }
+        public string? ContentType { get; set; }
         public string? VideoUrl { get; set; }  //??
         public DateTime EditedDate { get; set; }
         public int LikeCount { get; set; } = 0;
@@ -19,7 +20,7 @@ namespace CompanyPortal.Application.Abstractions.Post.Dtos
         //Connections
         public Guid UserId { get; set; }
         public AppUser? User { get; set; }
-        public ICollection<Comment>? Comments { get; set; }
+        public ICollection<Domain.Entities.Comment>? Comments { get; set; }
         public ICollection<Domain.Entities.Like>? Likes { get; set; }
     }
 }
