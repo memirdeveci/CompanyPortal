@@ -21,12 +21,12 @@
     margin-bottom: 20px;
 }
 
-.user-avatar {
-    width: 50px;
-    height: 50px;
+
+.user-info img {
+    width: 75px;
+    height: 75px;
     border-radius: 50%;
-    background: #ccc;
-    margin-right: 10px;
+    margin : 7px;
 }
 
 .user-details {
@@ -45,22 +45,27 @@
         color: #333;
     }
 
+.post-header p {
+    margin-top : 7px;
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.5;
+}
+
 .post-content {
     text-align: center;
     margin: 20px 0;
 }
 
-    .post-content img {
-        max-width: 100%;
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
 
-    .post-content p {
-        font-size: 1.1em;
-        color: #555;
-        line-height: 1.5;
-    }
+
+.post-content img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+
 
 .post-stats {
     display: flex;

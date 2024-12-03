@@ -1,8 +1,6 @@
 ﻿using CloudinaryDotNet.Actions;
 using CompanyPortal.Application.Abstractions.Post;
 using CompanyPortal.Application.Abstractions.Post.Dtos;
-using CompanyPortal.Domain.Entities;
-using CompanyPortal.ExternalServices;
 using CompanyPortal.ExternalServices.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

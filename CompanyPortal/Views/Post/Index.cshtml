@@ -3,7 +3,6 @@
 <link href="~/css/Post.css" rel="stylesheet"/>
 
 <h1>Posts</h1>
-
 @foreach (var post in Model)
 {
 
@@ -11,16 +10,18 @@
  
     <div class="post-container">
         <div class="user-info">
-            <div class="user-avatar"></div>
+            <div class="user-avatar">
+               <img src="@post.User?.ProfilePhoto">
+            </div>
             <div class="user-details">
                 <p><strong>@post.User?.UserName</strong></p>
                 <p>@post.EditedDate.ToString("MMMM dd, yyyy")</p>
                 <div class="post-actions">
                     <div class="delete-action">
-                        <form asp-action="DeletePost" asp-controller="Post" method="post">
+                            <form asp-action="DeletePost" asp-controller="Post" method="post">
                             <input type="hidden" name="Id" value="@post.Id">
                             <button type="submit" class="delete-button">Delete</button>
-                        </form>
+                            </form>
                     </div>
                 </div>
             </div>
@@ -28,11 +29,12 @@
 
         <div class="post-header">
             <h1>@post.Header</h1>
+            <p>@post.Text</p>
         </div>
 
         <div class="post-content">
             @if (!string.IsNullOrEmpty(post.ImageUrl))
-            {
+            {      
                 if (post.ContentType == "Video") {
                     <video width="500" height="500" controls>
                         <source src="@post.ImageUrl" type="video/mp4">
@@ -44,17 +46,16 @@
                     <img src="@post.ImageUrl" alt="Post Image" />
                 }
             }
-            <p>@post.Text</p>
         </div>
 
         <div class="post-stats">
             <div class="post-stat">
-                <strong id="divCount_@divCount">@post.LikeCount</strong>
-                <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','L','@divCount')" title="Beğendim">
+                <span id="likeCount_@divCount">@post.LikeCount</span>
+                <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','L','@divCount')"><span id="likeIcon_@divCount"><i class='bi bi-hand-thumbs-up'></i></span></button>
             </div>
             <div class="post-stat">
-                <strong>@post.DislikeCount</strong>
-                Dislikes
+                <span id="dislikeCount_@divCount">@post.DislikeCount</span>
+                <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','D','@divCount')"><span id="dislikeIcon_@divCount"><i class='bi bi-hand-thumbs-down'></i></span></button>
             </div>
             <div class="post-stat">
                 <strong>@post.CommentCount</strong>
@@ -90,17 +91,12 @@
                 "PostId" : post
             },
             success: function (response) {
-                if (!response.redirectUrl) {
-                    $("#likeCount_" + divCount).html(response.likeCount);
-                    $("#disLikeCount_" + divCount).html(response.dislikeCount);
-                    if (response.isLiked == true) $("#likeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-up-fill'></i>");
-                    else if (response.isDisliked == true) $("#dislikeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-down-fill'></i>");
-                    if (response.isLiked == false) $("#likeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-up'></i>");
-                    if (response.isDisliked == false) $("#dislikeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-down'></i>");
-                }
-                else {
-                    window.location.href = window.location.origin + response.redirectUrl;
-                }
+                    $("#likeCount_" + divCount).html(response.likeInfo.likeCount);
+                    $("#dislikeCount_" + divCount).html(response.likeInfo.dislikeCount);
+                    if (response.likeInfo.isLiked == true) $("#likeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-up-fill'></i>");
+                    else if (response.likeInfo.isDisliked == true) $("#dislikeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-down-fill'></i>");
+                    if (response.likeInfo.isLiked == false) $("#likeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-up'></i>");
+                    if (response.likeInfo.isDisliked == false) $("#dislikeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-down'></i>");
             },
             error: function (xhr, status, error) {
                 console.log("asdasd");

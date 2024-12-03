@@ -62,10 +62,6 @@ namespace CompanyPortal.ExternalServices
                 var uploadParams = new VideoUploadParams()
                 {
                     File = new FileDescription(file.FileName, stream)
-                    /*Transformation = new Transformation().Height(500)
-                                                         .Width(500)
-                                                         .Crop("fill")
-                                                         .Gravity("auto")*/
                 };
 
                 videoResult = await _cloudinary.UploadAsync(uploadParams);

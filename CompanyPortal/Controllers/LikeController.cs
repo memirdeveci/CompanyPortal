@@ -1,6 +1,5 @@
 ﻿using CompanyPortal.Application.Abstractions.Like;
 using CompanyPortal.Application.Abstractions.Like.Dtos;
-using CompanyPortal.Application.Abstractions.Post.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +18,11 @@ namespace CompanyPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddLike(LikeDto likeDto, string itemType)
         {
-            var response = await _likeService.AddLike(likeDto, User, itemType);
+            await _likeService.AddLike(likeDto, User, itemType);
 
-            return Json(new {});
+            var result = await _likeService.GetLikeDetail(likeDto, User);
+
+            return Json(new { likeInfo = result});
         }
 
         [HttpPost]

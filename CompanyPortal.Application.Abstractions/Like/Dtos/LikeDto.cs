@@ -1,8 +1,9 @@
-﻿using CompanyPortal.Domain.Entities;
+﻿using CompanyPortal.Application.Abstractions.Base;
+using CompanyPortal.Domain.Entities;
 
 namespace CompanyPortal.Application.Abstractions.Like.Dtos
 {
-    public class LikeDto
+    public class LikeDto : BaseDto
     {
         public char? LikeType { get; set; }
 
