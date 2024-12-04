@@ -24,11 +24,5 @@ namespace CompanyPortal.Controllers
 
             return Json(new { likeInfo = result});
         }
-
-        [HttpPost]
-        public IActionResult DeleteLike()
-        {
-            return Json(new { });
-        }
     }
 }

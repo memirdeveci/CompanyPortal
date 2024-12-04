@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using CompanyPortal.Application.Abstractions.Comment;
 using CompanyPortal.Application.Abstractions.Comment.Dtos;
-using CompanyPortal.Application.Abstractions.Department.Dtos;
 using CompanyPortal.Application.Abstractions.Repositories.Comment;
-using CompanyPortal.Application.Abstractions.Repositories.Department;
+using CompanyPortal.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CompanyPortal.Application.Comment
 {
@@ -12,18 +13,36 @@ namespace CompanyPortal.Application.Comment
     {
         private readonly ICommentReadRepository _commentReadRepository;
         private readonly ICommentWriteRepository _commentWriteRepository;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public CommentService(ICommentReadRepository commentReadRepository, ICommentWriteRepository commentWriteRepository, IMapper mapper)
+        public CommentService(ICommentReadRepository commentReadRepository, ICommentWriteRepository commentWriteRepository, IMapper mapper, UserManager<AppUser> userManager)
         {
             _commentReadRepository = commentReadRepository;
             _commentWriteRepository = commentWriteRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
-        public Task<bool> AddComment(CommentDto comment)
+        public async Task<bool> AddComment(CommentDto comment, ClaimsPrincipal principal)
         {
-            throw new NotImplementedException();
+            if (comment is null)
+                return false;
+
+            try
+            {
+                var user = await _userManager.GetUserAsync(principal);
+                var mappedResult = _mapper.Map<CommentDto, Domain.Entities.Comment>(comment);
+                mappedResult.User = user;
+
+                var response = await _commentWriteRepository.AddAsync(mappedResult);
+
+                return response;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public async Task<bool> DeleteComment(Guid id)
@@ -41,16 +60,13 @@ namespace CompanyPortal.Application.Comment
             }
         }
 
-        public Task<bool> EditComment(CommentDto comment)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<CommentDto>> GetAllComments()
+        public async Task<List<CommentDto>> GetAllComments(Guid PostId)
         {
             try
             {
                 var comments = await _commentReadRepository.GetQueryable()
+                                                           .Include(x => x.User)
+                                                           .Include(x => x.Likes)   //?
                                                            .Where(x => x.Status)
                                                            .ToListAsync();
 

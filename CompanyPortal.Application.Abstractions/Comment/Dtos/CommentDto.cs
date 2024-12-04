@@ -1,15 +1,14 @@
-﻿using CompanyPortal.Domain.Entities;
+﻿using CompanyPortal.Application.Abstractions.Base;
+using CompanyPortal.Domain.Entities;
 
 namespace CompanyPortal.Application.Abstractions.Comment.Dtos
 {
-    public class CommentDto
+    public class CommentDto : BaseDto
     {
         public string? Text { get; set; }
-        public DateTime EditedDate { get; set; }
         public int LikeCount { get; set; } = 0;
         public int DislikeCount { get; set; } = 0;
 
-        //Connections
         public Guid UserId { get; set; }
         public AppUser? User { get; set; }
         public Guid PostId { get; set; }

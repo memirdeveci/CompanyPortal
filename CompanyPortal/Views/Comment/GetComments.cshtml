@@ -1,0 +1,136 @@
+﻿@inject UserManager<AppUser> _userManager;
+@{
+    Layout = null;
+}
+@model List<CommentDto>
+@{
+    var newComment = new CommentDto();
+    //newComment.PostId = Model. == null ? Guid.NewGuid() : Guid.Parse(Model.MenuId);
+     var user = await _userManager.GetUserAsync(User);
+    // if (Model != null && Model.MenuId == null && Model.Comments != null)
+    // {
+    //     Model.MenuId = Model?.Comments?.FirstOrDefault()?.DailyMenu.Id.ToString();
+    //     newComment.DailyMenu.Id = Model.Comments.First().DailyMenu.Id;
+    // }
+}
+@if (Model == null || Model.Count == 0)
+{
+    <div style="display:flex;align-items:center;justify-content:center;padding-top:10px;">
+    <p><b> Henüz yorum yok, konuşmayı başlat ... </b></p>
+    </div>
+}
+<div class="commentsContainer">
+    <div class="commentList">
+        @foreach (var item in Model)
+        {
+            newComment.PostId = item.PostId == null ? Guid.NewGuid() : item.PostId;
+            <div class="comment">
+                <div class="topSection">
+                    <div class="infoSection">
+                        <div class="image"><img src="@item?.User?.ProfilePhoto" width="20" height="20" /></div>
+                        <div class="name">@item?.User?.Name</div>
+                        <div class="createdDate">@((item?.CreatedDate)?.ToString("g") ?? "")</div>
+                    </div>
+                    @if (User.Identity.IsAuthenticated && user == item?.User || User.IsInRole("Admin")) { 
+                    <div class="action">
+                            <div class="buttons">
+                            <button onclick="openDeleteModal('@item?.Id.ToString()','@item.PostId')"><i class="bi bi-trash"></i>Sil</button>
+                            </div>
+                    </div>
+                    }
+                </div>
+                <div class="text">@item?.Text</div>
+                @{
+                    var commDiv = Model.IndexOf(item);
+                }
+                <div class="footer">
+                    <div class="reactionContainer" style="display:flex;align-items:center;justify-content:center;">
+                        <div>
+                            <span id="likecount_@commDiv"> </span>
+                            <button class="reactionClass" onclick="fnCommentLike('@item.Id','L','@commDiv')" title="Beğendim">
+                                <span id="likeIcon_@commDiv">
+                                    <i class='bi bi-hand-thumbs-up'></i>
+                                   @*  @if (item?.LikeDetail?.isLiked == true)
+                                    {
+                                        <i class='bi bi-hand-thumbs-up-fill'></i>
+                                    }
+                                    else
+                                    {
+                                        <i class='bi bi-hand-thumbs-up'></i>
+                                    } *@
+                                </span>
+                            </button>
+                        </div>
+                        <div>
+                            <span id="dislikecount_@commDiv"></span>
+                            <button class="reactionClass" onclick="fnCommentLike('@item?.Id','D','@commDiv')" title="Beğenmedim">
+                                <span id="dislikeIcon_@commDiv">
+                                    <i class='bi bi-hand-thumbs-down'></i>
+                                    @* @if (item?.LikeDetail?.isDisliked == true)
+                                    {
+                                        <i class='bi bi-hand-thumbs-down-fill'></i>
+                                    }
+                                    else
+                                    {
+                                        <i class='bi bi-hand-thumbs-down'></i>
+                                    } *@
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div style="flex-grow: 1;"></div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="addComment">
+        <div class="addInfoSection">
+            <div class="image"><img src="@user.ProfilePhoto" width="20" height="20" /></div>
+            <div class="name">@user?.Name</div>
+        </div>
+        <div class="commentForm">
+              <partial name="~/Views/Comment/AddComment.cshtml" model="@newComment" />  
+            <span>Eklenecek</span>
+        </div>
+    </div>
+</div>
+
+<style>
+     .image {
+        margin-right: 7px;
+    }
+
+    .text {
+        word-wrap: break-word; 
+        overflow-wrap: break-word; 
+    }
+
+    .footer {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .footer .replyButton {
+            cursor: pointer;
+            background-color:transparent;
+        }
+
+    .reactionClass{
+        border-style:none;
+        background-color:transparent;
+        padding-right:5px;
+    }
+    .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; 
+    }
+
+    .replies{
+        flex-grow: 1; 
+    } .createdDate {
+        font-size: 12px; 
+        margin-left: 5px; 
+        color: #888; 
+    }
+</style>

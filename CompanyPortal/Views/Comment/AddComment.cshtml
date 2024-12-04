@@ -1,0 +1,55 @@
+﻿@model CommentDto
+@{
+    var selam = "naber";
+}
+
+<form asp-action="AddComment" autocomplete="off" id="addCommentForm" asp-controller="Comment" method="post" style="flex: 1; display: flex;">
+    
+    @Html.HiddenFor(x => x.PostId)
+    <input type="text" asp-for="Text" id="commentInputBox" value="" maxlength="200" required placeholder="Yorum Yap :)" style="flex: 1; padding: 6px; margin-right:1em;">
+    <span asp-validation-for="Text" class="text-danger"></span>
+    <button type="submit" id="sendCommentButton" class="btn" style="background-color:#BED7DC;">
+        <span>Gönder</span>
+        <span id="sendCommentSpinner" style="display:none" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    </button>
+</form>
+<script>
+    $("#addCommentForm").submit(function (event) {
+        event.preventDefault();
+
+        $("#sendCommentSpinner").toggle();
+        $('#sendCommentButton').prop('disabled', true);
+
+        var input = $("#commentInputBox").val();
+        var formData = $('#addCommentForm').serialize()
+
+        $('#addCommentForm')[0].reset();
+
+        if (input.replace(/ /g, '') === "") {
+            $("#sendCommentSpinner").toggle();
+            $('#sendCommentButton').prop('disabled', false);
+            $("#errorTexts").text("Yorum alanı boş bırakılamaz.");
+            return;
+        } else {
+            $("#errorTexts").text("");
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Comment/AddComment",
+            data: formData,
+            success: function (response) {
+                    if (!response.message) {
+                        $("#modal-body").html(response);
+                        $('#myModal').modal('show');
+                    }
+                openModal(response.post);
+            },
+            error: function () {
+                console.log('Error');
+            }
+        });
+        $("#sendCommentSpinner").toggle();
+        $('#sendCommentButton').prop('disabled', false);
+    });
+</script>

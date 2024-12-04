@@ -18,10 +18,10 @@
                 <p>@post.EditedDate.ToString("MMMM dd, yyyy")</p>
                 <div class="post-actions">
                     <div class="delete-action">
-                            <form asp-action="DeletePost" asp-controller="Post" method="post">
+                        <form asp-action="DeletePost" asp-controller="Post" method="post">
                             <input type="hidden" name="Id" value="@post.Id">
                             <button type="submit" class="delete-button">Delete</button>
-                            </form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -58,30 +58,50 @@
                 <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','D','@divCount')"><span id="dislikeIcon_@divCount"><i class='bi bi-hand-thumbs-down'></i></span></button>
             </div>
             <div class="post-stat">
-                <strong>@post.CommentCount</strong>
-                Comments
+                <span id="commCount_@divCount">@post.CommentCount</span>
+                <button class="commentButtonStyle" onclick="openModal('@post.Id.ToString()')"><i class="bi bi-chat-dots"></i></button>
             </div>
         </div>
-
-        @if (post.Comments != null && post.Comments.Any())
-        {
-            <div class="post-comments">
-                <h3>Comments</h3>
-                <ul>
-                    @foreach (var comment in post.Comments)
-                    {
-                        <li>
-                            <strong>@comment.User?.UserName:</strong> @comment.Text
-                        </li>
-                    }
-                </ul>
-            </div>
-        }
-    </div>
+   </div>
 }
 
 
+   <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable" style="padding-bottom:2em;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Yorumlar</h5>
+                <button type="button" onclick="getCommentCount()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" id="modal-body" style="padding:0;">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Onay</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Yorum silinecek, onaylıyor musunuz?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                        <button type="button" id="deleteCommentButton" class="btn btn-primary" onclick="confirmDelete()">Sil</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 <script>
+    var commentId;
+    var post;
+    var divCount;
+
     function fnPostLike(post, type, divCount) {
         $.ajax({
             url: "/Like/AddLike",
@@ -99,8 +119,26 @@
                     if (response.likeInfo.isDisliked == false) $("#dislikeIcon_" + divCount).html("<i class='bi bi-hand-thumbs-down'></i>");
             },
             error: function (xhr, status, error) {
-                console.log("asdasd");
+                console.log("hata");
             }
         });
     }
+
+    function openModal(id) {
+    post = id;
+    $.ajax({
+        url: "/Comment/GetComments",
+        method: 'GET',
+        data: { "postId": id },
+        dataType: 'html',
+        success: function (response) {
+            $("#modal-body").html(response);
+            $('#myModal').modal('show');
+        },
+        error: function (xhr, status, error) {
+            debugger;
+            console.log("asdasd");
+        }
+    });
+}
 </script>
