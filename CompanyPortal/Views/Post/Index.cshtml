@@ -1,8 +1,16 @@
-﻿@model List<PostDto>
+﻿@inject UserManager<AppUser> _userManager;
+@model List<PostDto>
 
 <link href="~/css/Post.css" rel="stylesheet"/>
+@{
+    var user = await _userManager.GetUserAsync(User);
+    
+}
 
-<h1 style="text-align:center;color:white">Posts</h1>
+<div class="addButton">
+    <a asp-action="CreatePost" asp-controller="Post"><span>Create Post</span></a>
+</div>
+<h1 style="text-align:center;color:white;margin-top:40px;">Posts</h1>
 @foreach (var post in Model)
 {
 
@@ -16,14 +24,17 @@
             <div class="user-details">
                 <p><strong>@post.User?.UserName</strong></p>
                 <p>@post.EditedDate.ToString("MMMM dd, yyyy")</p>
-                <div class="post-actions">
-                    <div class="delete-action">
+                @if (User.Identity.IsAuthenticated && user == post?.User || User.IsInRole("Admin"))
+                {
+                    <div class="post-actions">
+                        <div class="delete-action">
                         <form asp-action="DeletePost" asp-controller="Post" method="post">
                             <input type="hidden" name="Id" value="@post.Id">
                             <button type="submit" class="delete-button"><i class="bi bi-trash"></i></button>
                         </form>
                     </div>
                 </div>
+                }
             </div>
         </div>
 
@@ -54,7 +65,7 @@
                 <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','L','@divCount')"><span id="likeIcon_@divCount"><i class='bi bi-hand-thumbs-up'></i></span></button>
             </div>
             <div class="post-stat">
-                <span id="dislikeCount_@divCount">@post.DislikeCount</span>
+                <span id="dislikeCounter">@post.DislikeCount</span>
                 <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','D','@divCount')"><span id="dislikeIcon_@divCount"><i class='bi bi-hand-thumbs-down'></i></span></button>
             </div>
             <div class="post-stat">

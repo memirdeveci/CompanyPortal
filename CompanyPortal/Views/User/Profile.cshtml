@@ -6,7 +6,7 @@
     <div class="profile-header">
         <img src="@Model.ProfilePhoto" alt="Profile Picture">
         <h1>@Model.Name @Model.Surname</h1>
-        <h3>Human Resources</h3>
+        <h3>@Model.DepartmentName</h3>
         <p>@Model.Position</p>
         <a class="edit-profile-btn" asp-action="EditProfile" asp-controller="User">Edit Profile</a>
     </div>

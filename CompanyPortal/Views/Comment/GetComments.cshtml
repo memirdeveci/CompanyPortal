@@ -3,22 +3,17 @@
     Layout = null;
 }
 <link href="~/css/Comment.css" rel="stylesheet" />
-
 @model List<CommentDto>
 @{
     var newComment = new CommentDto();
-    //newComment.PostId = Model. == null ? Guid.NewGuid() : Guid.Parse(Model.MenuId);
      var user = await _userManager.GetUserAsync(User);
-    // if (Model != null && Model.MenuId == null && Model.Comments != null)
-    // {
-    //     Model.MenuId = Model?.Comments?.FirstOrDefault()?.DailyMenu.Id.ToString();
-    //     newComment.DailyMenu.Id = Model.Comments.First().DailyMenu.Id;
-    // }
 }
+
+
 @if (Model == null || Model.Count == 0)
 {
     <div style="display:flex;align-items:center;justify-content:center;padding-top:10px;">
-    <p><b> Henüz yorum yok, konuşmayı başlat ... </b></p>
+    <p><b> No comment, Start Conversation ... </b></p>
     </div>
 }
 <div class="commentsContainer">
@@ -95,41 +90,45 @@
                             @if (User.Identity.IsAuthenticated && user == item?.User || User.IsInRole("Admin"))
                             {
                                 <div class="delete-action">
-                                    <div class="buttons">
+                                    <form asp-action="DeleteComment" asp-controller="Comment" method="post">
+                                        <input type="hidden" name="Id" value="@item?.Id">
+                                        <button type="submit" class="delete-button"><i class="bi bi-trash"></i></button>
+                                     </form>
+                                    @* <div class="buttons">
                                         <button onclick="openDeleteModal('@item?.Id.ToString()','@item.PostId')"><i class="bi bi-trash"></i></button>
-                                    </div>
+                                    </div> *@
                                 </div>
                             }
                         </div>
                         
                     </div>
                     <p class="text">@item.Text</p>
-                    <div class="votes">
+                    @* <div class="votes">
                         <div class="like">
                             <i class='bi bi-hand-thumbs-up'></i> : @item.LikeCount
-                            @*@if (item?.LikeDetail?.isLiked == true)
+                            @if (item?.LikeDetail?.isLiked == true)
                             {
                                 <i class='bi bi-hand-thumbs-up-fill'></i>
                             }
                             else
                             {
                                 <i class='bi bi-hand-thumbs-up'></i>
-                            }*@
+                            }
                         </div>
                         <div class="dislike">
                             <i class='bi bi-hand-thumbs-down'></i> : @item.DislikeCount
 
-                            @* @if (item?.LikeDetail?.isDisliked == true)
+                             @if (item?.LikeDetail?.isDisliked == true)
                             {
                             <i class='bi bi-hand-thumbs-down-fill'></i>
                             }
                             else
                             {
                             <i class='bi bi-hand-thumbs-down'></i>
-                            }*@
+                            }
                             
                         </div>
-                    </div>
+                    </div>*@
                 </div>
         }
     </div>
@@ -140,40 +139,33 @@
         </div>
         <div class="commentForm">
              <partial name="~/Views/Comment/AddComment.cshtml" model="@newComment" />  
-            <span>Eklenecek</span>
         </div>
     </div>
 </div>
 
 <style>
- /*     .image {
-        margin-right: 7px;
+    .addComment{
+        background: #fff;
+        margin: 30px;
+        padding: 10px;
+        border: 2px solid black;
+        border-radius: 3px;
+        box-shadow: 0px 4px 8px rgba(0,0,0,0.15);
     }
 
-    .text {
-        word-wrap: break-word; 
-        overflow-wrap: break-word; 
-    }
-
-    .footer {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .reactionClass{
-        border-style:none;
-        background-color:transparent;
-        padding-right:5px;
-    }
-    .footer {
+    .addInfoSection
+    {
         display: flex;
         align-items: center;
-        justify-content: space-between; 
+        margin-bottom: 20px;
+        position: relative;
     }
 
-     .createdDate {
-        font-size: 12px; 
-        margin-left: 5px; 
-        color: #888; 
-    } */
+    .addInfoSection img{
+            height: 50px;
+            width: 50px;
+            background: #17a2b8;
+            border-radius: 50%;
+            border: 2px solid #fff;
+    }
 </style>

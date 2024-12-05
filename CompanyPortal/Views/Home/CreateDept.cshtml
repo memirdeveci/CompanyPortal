@@ -1,17 +1,40 @@
 ﻿@model DepartmentDto
+@{
+    Layout = null;
+}
 
-<form method="post">
-    <input type="text" asp-for="DeptName" placeholder="Department name" required="" autocomplete="off">
-    <br>
-    <br>
-    <input type="text" asp-for="DeptCode" placeholder="Department code" required="" autocomplete="off">
-    <br>
-    <br>
-    <input type="text" asp-for="DeptDesc" placeholder="Department desc" required="" autocomplete="off">
-    <br>
-    <br>
-    <input type="text" asp-for="DeptLogo" placeholder="Department logo" required="" autocomplete="off">
-    <br>
-    <br>
-    <input type="submit" value="Kaydet">
-</form>
+<link href="~/css/Login.css" rel="stylesheet" />
+
+<div class="container">
+    <header>Dept Create Form</header>
+    <div class="form-outer">
+        <form method="post">
+            <div class="page slide-page">
+                <div class="title">
+                    Department Info:
+                </div>
+                <div class="field">
+                    <div class="label">
+                        Department
+                    </div>
+                    <input type="text" asp-for="DeptName" required="" autocomplete="off">
+                </div>
+                <div class="field">
+                    <div class="label">
+                        Department Code
+                    </div>
+                    <input type="text" asp-for="DeptCode" required="" autocomplete="off">
+                </div>
+                <div class="field">
+                    <div class="label">
+                        Department Description
+                    </div>
+                    <input type="text" asp-for="DeptDesc" required="" autocomplete="off">
+                </div>
+                <div class="field">
+                    <button class="submit" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

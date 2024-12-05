@@ -26,5 +26,12 @@ namespace CompanyPortal.Controllers
             await _commentService.AddComment(comment, User);
             return Json(new { post = comment.PostId});
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(Guid id)
+        {
+            await _commentService.DeleteComment(id);
+            return RedirectToAction("Index", "Post");
+        }
     }
 }

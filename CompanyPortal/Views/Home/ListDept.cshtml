@@ -1,12 +1,15 @@
 ﻿@model IEnumerable<DepartmentDto>
 
-<table class="table">
+    @{
+        Layout = null;
+    }
+
+<table border="solid 2px black">
     <thead>
         <tr>
             <th>Dept Name</th>
             <th>Dept Code</th>
             <th>Dept Desc</th>
-            <th>Dept Logo</th>
         </tr>
     </thead>
     <tbody>
@@ -16,8 +19,47 @@
                 <td>@item.DeptName</td>
                 <td>@item.DeptCode</td>
                 <td>@item.DeptDesc</td>
-                <td>@item.DeptLogo</td>
             </tr>
         }
+        <tr>
+            <td colspan="2">Return Admin Page</td>
+            <td><a asp-action="AdminPanel" asp-controller="User">Return</a></td>
+        </tr>
     </tbody>
 </table>
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background-color: #17a2b8;
+        color: black;
+    }
+
+    table {
+        background :#fff;
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 30px;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        padding:20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+    }
+
+    a {
+        color: black;
+    }
+
+        a:hover {
+            color: aqua;
+        }
+</style>
