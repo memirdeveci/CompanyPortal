@@ -21,6 +21,7 @@ namespace CompanyPortal.Controllers
         public async Task<IActionResult> Index()
         {
             var posts = await _postService.GetAllPosts();
+            posts.Sort((x, y) => DateTime.Compare(y.CreatedDate, x.CreatedDate));
             return View(posts);
         }
 

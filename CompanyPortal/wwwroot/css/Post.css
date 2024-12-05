@@ -1,8 +1,10 @@
-﻿body {
-    font-family: Arial, sans-serif;
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background: #17a2b8;
 }
 
 .post-container {
@@ -81,11 +83,18 @@
     color: #666;
 }
 
-    .post-stat strong {
+    .post-stat span {
         display: block;
         font-size: 1.2em;
         color: #333;
     }
+
+    .post-stat button
+    {
+        background-color : transparent;
+        border : none;
+    }
+
 
 .post-comments {
     margin-top: 20px;
@@ -120,15 +129,12 @@
     position: absolute;
     top: 0;
     right: 0;
-    font-size: 12px;
+    font-size: 1.5em;
 }
 
-.delete-action a {
-    color: #ff4d4d;
-    text-decoration: none;
-    font-weight: bold;
-}
 
-    .delete-action a:hover {
-        color: #e60000;
-    }
+
+.delete-action button {
+    background-color: transparent;
+    border: none;
+}

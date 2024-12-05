@@ -16,6 +16,7 @@ namespace CompanyPortal.Controllers
         public async Task<IActionResult> GetComments(string postId)
         {
             var comments = await _commentService.GetAllComments(Guid.Parse(postId));
+            comments.Sort((x, y) => DateTime.Compare(y.CreatedDate, x.CreatedDate));
             return PartialView(comments);
         }
 

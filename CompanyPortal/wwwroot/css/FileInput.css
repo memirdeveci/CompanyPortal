@@ -1,0 +1,33 @@
+﻿
+/*File Uploading css*/
+.wrapper {
+    height: 180px;
+    width: 390px;
+    border : 2px dashed black;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 7px 7px 12px rgba(0,0,0,0.05);
+}
+
+    .wrapper .formDiv {
+        background:wheat;
+        height: 180px;
+        display: flex;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+        .wrapper .formDiv :where(i, p) {
+            color: black;
+        }
+
+        .wrapper .formDiv i {
+            font-size: 50px;
+        }
+
+        .wrapper .formDiv p {
+            margin-top: 15px;
+            font-size: 16px;
+        }

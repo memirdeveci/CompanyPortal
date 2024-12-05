@@ -2,6 +2,8 @@
 @{
     Layout = null;
 }
+<link href="~/css/Comment.css" rel="stylesheet" />
+
 @model List<CommentDto>
 @{
     var newComment = new CommentDto();
@@ -24,7 +26,7 @@
         @foreach (var item in Model)
         {
             newComment.PostId = item.PostId == null ? Guid.NewGuid() : item.PostId;
-            <div class="comment">
+            @* <div class="comment">
                 <div class="topSection">
                     <div class="infoSection">
                         <div class="image"><img src="@item?.User?.ProfilePhoto" width="20" height="20" /></div>
@@ -50,14 +52,14 @@
                             <button class="reactionClass" onclick="fnCommentLike('@item.Id','L','@commDiv')" title="Beğendim">
                                 <span id="likeIcon_@commDiv">
                                     <i class='bi bi-hand-thumbs-up'></i>
-                                   @*  @if (item?.LikeDetail?.isLiked == true)
+                                     @if (item?.LikeDetail?.isLiked == true)
                                     {
                                         <i class='bi bi-hand-thumbs-up-fill'></i>
                                     }
                                     else
                                     {
                                         <i class='bi bi-hand-thumbs-up'></i>
-                                    } *@
+                                    } 
                                 </span>
                             </button>
                         </div>
@@ -73,30 +75,78 @@
                                     else
                                     {
                                         <i class='bi bi-hand-thumbs-down'></i>
-                                    } *@
+                                    }  
                                 </span>
                             </button>
                         </div>
                     </div>
                     <div style="flex-grow: 1;"></div>
                 </div>
-            </div>
+        </div> *@
+
+                <div class="box">
+                    <div class="content">
+                        <div class="image">
+                            <img src="@item?.User?.ProfilePhoto" alt="">
+                        </div>
+                        <div class="info">
+                            <p class="name">@item?.User?.UserName</p>
+                            <p class="job">@item.CreatedDate</p>
+                            @if (User.Identity.IsAuthenticated && user == item?.User || User.IsInRole("Admin"))
+                            {
+                                <div class="delete-action">
+                                    <div class="buttons">
+                                        <button onclick="openDeleteModal('@item?.Id.ToString()','@item.PostId')"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        
+                    </div>
+                    <p class="text">@item.Text</p>
+                    <div class="votes">
+                        <div class="like">
+                            <i class='bi bi-hand-thumbs-up'></i> : @item.LikeCount
+                            @*@if (item?.LikeDetail?.isLiked == true)
+                            {
+                                <i class='bi bi-hand-thumbs-up-fill'></i>
+                            }
+                            else
+                            {
+                                <i class='bi bi-hand-thumbs-up'></i>
+                            }*@
+                        </div>
+                        <div class="dislike">
+                            <i class='bi bi-hand-thumbs-down'></i> : @item.DislikeCount
+
+                            @* @if (item?.LikeDetail?.isDisliked == true)
+                            {
+                            <i class='bi bi-hand-thumbs-down-fill'></i>
+                            }
+                            else
+                            {
+                            <i class='bi bi-hand-thumbs-down'></i>
+                            }*@
+                            
+                        </div>
+                    </div>
+                </div>
         }
     </div>
     <div class="addComment">
         <div class="addInfoSection">
             <div class="image"><img src="@user.ProfilePhoto" width="20" height="20" /></div>
-            <div class="name">@user?.Name</div>
+            <div class="name">@user?.UserName</div>
         </div>
         <div class="commentForm">
-              <partial name="~/Views/Comment/AddComment.cshtml" model="@newComment" />  
+             <partial name="~/Views/Comment/AddComment.cshtml" model="@newComment" />  
             <span>Eklenecek</span>
         </div>
     </div>
 </div>
 
 <style>
-     .image {
+ /*     .image {
         margin-right: 7px;
     }
 
@@ -110,11 +160,6 @@
         justify-content: flex-end;
     }
 
-        .footer .replyButton {
-            cursor: pointer;
-            background-color:transparent;
-        }
-
     .reactionClass{
         border-style:none;
         background-color:transparent;
@@ -126,11 +171,9 @@
         justify-content: space-between; 
     }
 
-    .replies{
-        flex-grow: 1; 
-    } .createdDate {
+     .createdDate {
         font-size: 12px; 
         margin-left: 5px; 
         color: #888; 
-    }
+    } */
 </style>

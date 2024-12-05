@@ -2,7 +2,7 @@
 
 <link href="~/css/Post.css" rel="stylesheet"/>
 
-<h1>Posts</h1>
+<h1 style="text-align:center;color:white">Posts</h1>
 @foreach (var post in Model)
 {
 
@@ -20,7 +20,7 @@
                     <div class="delete-action">
                         <form asp-action="DeletePost" asp-controller="Post" method="post">
                             <input type="hidden" name="Id" value="@post.Id">
-                            <button type="submit" class="delete-button">Delete</button>
+                            <button type="submit" class="delete-button"><i class="bi bi-trash"></i></button>
                         </form>
                     </div>
                 </div>

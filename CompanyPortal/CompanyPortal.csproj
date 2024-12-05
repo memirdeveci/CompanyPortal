@@ -7,7 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\FileInput.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\Comment.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\FileInput.css" />
     <_ContentIncludedByDefault Remove="wwwroot\css\Login.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\FileInput.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\FileInput.js" />
   </ItemGroup>
 
   <ItemGroup>
