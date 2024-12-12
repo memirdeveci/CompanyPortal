@@ -7,8 +7,8 @@
     
 }
 
-<div class="addButton">
-    <a asp-action="CreatePost" asp-controller="Post"><span>Create Post</span></a>
+<div class="addButton" style="text-align:center;">
+    <a asp-action="CreatePost" asp-controller="Post" style="text-decoration:none;background:black;padding:5px;font-size:20px;"><span style="color:white">Create Post</span></a>
 </div>
 <h1 style="text-align:center;color:white;margin-top:40px;">Posts</h1>
 @foreach (var post in Model)
@@ -65,7 +65,7 @@
                 <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','L','@divCount')"><span id="likeIcon_@divCount"><i class='bi bi-hand-thumbs-up'></i></span></button>
             </div>
             <div class="post-stat">
-                <span id="dislikeCounter">@post.DislikeCount</span>
+                <span id="dislikeCount_@divCount">@post.DislikeCount</span>
                 <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','D','@divCount')"><span id="dislikeIcon_@divCount"><i class='bi bi-hand-thumbs-down'></i></span></button>
             </div>
             <div class="post-stat">
@@ -89,7 +89,7 @@
             </div>
           </div>
         </div>
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

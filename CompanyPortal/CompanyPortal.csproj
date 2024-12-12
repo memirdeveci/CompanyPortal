@@ -47,4 +47,8 @@
     <ProjectReference Include="..\CompanyPortal.Persistance\CompanyPortal.Persistance.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

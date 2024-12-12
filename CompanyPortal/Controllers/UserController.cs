@@ -78,12 +78,20 @@ namespace CompanyPortal.Controllers
             }
             return View();
         }
-        
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            await _userService.DeleteUser(id);
+            return RedirectToAction("ListUser", "User");
+        }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ListUser()
         {
             var users = await _userService.GetAllUsers();
+            users.Sort((x, y) => DateTime.Compare(y.CreatedDate, x.CreatedDate));
             return View(users);
         }
 

@@ -32,6 +32,7 @@ namespace CompanyPortal.Controllers
         public async Task<IActionResult> ListDept()
         {
             var depts = await _deptService.GetAllDepartments();
+            depts.Sort((x, y) => DateTime.Compare(y.CreatedDate, x.CreatedDate));
             return View(depts);
         }
 
