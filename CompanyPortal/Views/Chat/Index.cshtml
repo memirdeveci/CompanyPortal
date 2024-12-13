@@ -1,0 +1,56 @@
+﻿<div style="display:none;" id="state"></div>
+<br />
+<br />
+<input id="inputText" type="text"/>
+<button id="sendButton"> Send</button>
+
+<div id="chats">
+</div>
+
+<script>
+    $(document).ready(function () {
+        const connection = new signalR.HubConnectionBuilder().withUrl("/ChatHub").build();
+
+        connection.start();
+
+        $("#sendButton").click(() => {
+            let message = $("#inputText").val();
+            connection.invoke("SendMessageAsync", message);
+        });
+
+        connection.on("ReceiveMessage", message => {
+            let chat = $("#chats");
+            chat.append(`<div class="d-flex flex-row justify-content-end mb-4 pt-1">
+            <div>
+                <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-warning">
+                    ${message}
+                </p>
+            </div>
+            </div>`)
+        });
+        var state = $("#state")
+        connection.on("UserJoined", id => { 
+            state.css("background-color", "green");
+            state.css("color", "white");
+            state.html(`${id} Joined`);
+            state.fadeIn(2000, () => {
+                setTimeout(() => { 
+                    state.fadeOut(2000);
+                },2000)
+            });
+        });
+
+        connection.on("UserLeft", id => {
+            debugger;
+            state.css("background-color", "red");
+            state.css("color", "white");
+            state.html(`${id} Left`);
+            state.fadeIn(2000, () => {
+                setTimeout(() => {
+                    state.fadeOut(2000);
+                }, 2000)
+            });
+        });
+
+    });
+</script>
