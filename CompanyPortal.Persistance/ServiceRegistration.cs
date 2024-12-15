@@ -1,12 +1,15 @@
-﻿using CompanyPortal.Application.Abstractions.Comment;
+﻿using CompanyPortal.Application.Abstractions.Chat;
+using CompanyPortal.Application.Abstractions.Comment;
 using CompanyPortal.Application.Abstractions.Department;
 using CompanyPortal.Application.Abstractions.Like;
 using CompanyPortal.Application.Abstractions.Post;
+using CompanyPortal.Application.Abstractions.Repositories.Chat;
 using CompanyPortal.Application.Abstractions.Repositories.Comment;
 using CompanyPortal.Application.Abstractions.Repositories.Department;
 using CompanyPortal.Application.Abstractions.Repositories.Like;
 using CompanyPortal.Application.Abstractions.Repositories.Post;
 using CompanyPortal.Application.Abstractions.User;
+using CompanyPortal.Application.Chat;
 using CompanyPortal.Application.Comment;
 using CompanyPortal.Application.Department;
 using CompanyPortal.Application.Like;
@@ -14,6 +17,7 @@ using CompanyPortal.Application.Post;
 using CompanyPortal.Application.User;
 using CompanyPortal.Domain.Entities;
 using CompanyPortal.Persistance.DbContext;
+using CompanyPortal.Persistance.Repositories.Chat;
 using CompanyPortal.Persistance.Repositories.Comment;
 using CompanyPortal.Persistance.Repositories.Department;
 using CompanyPortal.Persistance.Repositories.Like;
@@ -59,6 +63,11 @@ namespace CompanyPortal.Persistance
             services.AddScoped<ILikeReadRepository, LikeReadRepository>();
             services.AddScoped<ILikeWriteRepository, LikeWriteRepository>();
             services.AddScoped<ILikeService, LikeService>();
+
+            //Chat
+            services.AddScoped<IChatReadRepository, ChatReadRepository>();
+            services.AddScoped<IChatWriteRepository, ChatWriteRepository>();
+            services.AddScoped<IChatService, ChatService>();
         }
     }
 }

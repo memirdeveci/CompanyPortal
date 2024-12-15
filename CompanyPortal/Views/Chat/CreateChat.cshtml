@@ -1,0 +1,73 @@
+﻿@model ChatDto
+
+<h2>Kullanıcıları Seçin</h2>
+
+<form asp-action="CreateChat" asp-controller="Chat" method="post">
+    <div class="form-group">
+        <label asp-for="UserIds">Kullanıcılar</label>
+        <select id="userSelect" asp-for="UserIds" class="form-control" multiple>
+            @foreach (var user in Model.Users)
+            {
+                <option value="@user.Id" data-image="@user.ProfilePhoto">
+                    <img src="@user.ProfilePhoto" alt="@user.Name" style="width: 30px; height: 30px; margin-right: 10px;" />
+                    @user.Name
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="chatName">Chat Adı</label>
+        <input type="text" id="chatName" name="Name" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Chat Oluştur</button>
+</form>
+
+<style>
+    .user-select2-container .select2-selection__rendered {
+        display: flex;
+        align-items: center;
+    }
+
+        .user-select2-container .select2-selection__rendered img {
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+        }
+</style>
+
+<script>
+    $(document).ready(function () {
+        // Select2'i başlat
+        $('#userSelect').select2({
+            placeholder: 'Kullanıcıları Seçin',  // Placeholder metni
+            allowClear: true,  // Temizleme özelliği
+            templateResult: formatUser,  // Kullanıcıyı özel olarak göstermek için template
+            templateSelection: formatUserSelection  // Seçilen kullanıcıyı özel olarak göstermek için template
+        });
+
+        // Kullanıcıları göstermek için özel format
+        function formatUser(user) {
+            if (!user.id) { return user.text; }
+            var $user = $(
+                `<div class="d-flex align-items-center">
+                        <img src="${$(user.element).data('image')}" alt="${user.text}" style="width: 30px; height: 30px; margin-right: 10px;" />
+                        ${user.text}
+                    </div>`
+            );
+            return $user;
+        }
+
+        function formatUserSelection(user) {
+            if (!user.id) { return user.text; }
+            var $selectedUser = $(
+                `<div class="d-flex align-items-center">
+                        <img src="${$(user.element).data('image')}" alt="${user.text}" style="width: 25px; height: 25px; border-radius: 50%; margin-right: 10px;" />
+                        ${user.text}
+                    </div>`
+            );
+            return $selectedUser;
+        }
+    });
+</script>

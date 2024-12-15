@@ -1,4 +1,5 @@
 ﻿using CompanyPortal.Application.Abstractions.User.Dtos;
+using CompanyPortal.Domain.Entities;
 using System.Security.Claims;
 
 namespace CompanyPortal.Application.Abstractions.User
@@ -13,5 +14,7 @@ namespace CompanyPortal.Application.Abstractions.User
         Task<bool> SoftDeleteUser(Guid id);
         Task<AdminDto> GetAdmin(ClaimsPrincipal principal);
         Task<ProfileDto> GetProfile(ClaimsPrincipal principal);
+        Task<List<AppUser>> GetAllAppUsers();
+        Task<List<AppUser>> GetAllAppUsersWithIds(List<string> Ids);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CompanyPortal.Application.Abstractions.Chat.Dtos;
 using CompanyPortal.Application.Abstractions.Comment.Dtos;
 using CompanyPortal.Application.Abstractions.Department.Dtos;
 using CompanyPortal.Application.Abstractions.Like.Dtos;
@@ -18,6 +19,7 @@ namespace CompanyPortal.Application.Mappings
             CreateMap<Domain.Entities.AppUser, ProfileDto>().ReverseMap();
             CreateMap<Domain.Entities.Like, LikeDto>().ReverseMap();
             CreateMap<Domain.Entities.Comment, CommentDto>().ReverseMap();
+            CreateMap<Domain.Entities.Chat, ChatDto>().ReverseMap();
         }
     }
 }

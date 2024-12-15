@@ -175,5 +175,46 @@ namespace CompanyPortal.Application.User
                 return new ProfileDto();
             }
         }
+
+        public async Task<List<AppUser>> GetAllAppUsers()
+        {
+            try
+            {
+                var users = await _userManager.Users.ToListAsync();
+
+                if (users is null)
+                    return [];
+
+                return users;
+            }
+            catch (Exception)
+            {
+                return [];
+            }
+        }
+
+        public async Task<List<AppUser>> GetAllAppUsersWithIds(List<string> Ids)
+        {
+            try
+            {
+                var users = new List<AppUser>();
+                foreach (string id in Ids)
+                {
+                    var user = await _userManager.FindByIdAsync(id);
+
+                    if (user is not null)
+                        users.Add(user);
+                }
+                
+                if (users is null)
+                    return [];
+
+                return users;
+            }
+            catch (Exception)
+            {
+                return [];
+            }
+        }
     }
 }
