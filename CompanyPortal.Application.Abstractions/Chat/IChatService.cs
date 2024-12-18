@@ -10,5 +10,6 @@ namespace CompanyPortal.Application.Abstractions.Chat
         Task<bool> EditChat(ChatDto chat);
         Task<ChatDto> GetChatById(Guid id);
         Task<List<ChatDto>> GetAllChat();
+        Task<List<ChatDto>> GetUserChats(ClaimsPrincipal principal);
     }
 }

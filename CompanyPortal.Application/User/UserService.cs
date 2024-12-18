@@ -216,5 +216,26 @@ namespace CompanyPortal.Application.User
                 return [];
             }
         }
+
+        public async Task<List<AppUser>> GetAllAppUsersWoutCurrent(ClaimsPrincipal principal)
+        {
+            try
+            {
+                var currentUser = await _userManager.GetUserAsync(principal);
+
+                var users = await _userManager.Users.ToListAsync();
+
+                users = users.Where(x => x != currentUser).ToList();
+
+                if (users is null)
+                    return [];
+
+                return users;
+            }
+            catch (Exception)
+            {
+                return [];
+            }
+        }
     }
 }

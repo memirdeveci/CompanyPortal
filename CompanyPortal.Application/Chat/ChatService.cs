@@ -113,5 +113,31 @@ namespace CompanyPortal.Application.Chat
         {
             throw new NotImplementedException();
         }
+
+        public async Task<List<ChatDto>> GetUserChats(ClaimsPrincipal principal)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(principal);
+
+                var chats = _chatReadRepository.GetQueryable()
+                                               .Include(x => x.Users)
+                                               .Where(x => x.Status)
+                                               .AsEnumerable()
+                                               .Where(x => x.Users.Contains(user))
+                                               .ToList();
+
+                if (chats is null)
+                    return [];
+
+                var mappedResult = _mapper.Map<List<Domain.Entities.Chat>, List<ChatDto>>(chats);
+
+                return mappedResult;
+            }
+            catch (Exception)
+            {
+                return [];
+            }
+        }
     }
 }

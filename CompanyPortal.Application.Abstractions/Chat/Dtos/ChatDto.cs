@@ -1,4 +1,5 @@
 ﻿using CompanyPortal.Application.Abstractions.Base;
+using Microsoft.AspNetCore.Http;
 
 namespace CompanyPortal.Application.Abstractions.Chat.Dtos
 {
@@ -6,6 +7,7 @@ namespace CompanyPortal.Application.Abstractions.Chat.Dtos
     {
         public string? ChatName { get; set; }
         public string? ChatPhoto { get; set; }
+        public IFormFile? ChatPhotoFile { get; set; }
         public List<string>? UserIds { get; set; }
 
         //Connections

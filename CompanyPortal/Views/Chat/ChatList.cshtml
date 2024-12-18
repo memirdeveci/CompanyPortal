@@ -1,0 +1,235 @@
+﻿@model List<ChatDto>
+
+<div class="chat-container" style="height:70vh;">
+    <!-- Sidebar for Chat List -->
+    <div class="chat-list">
+        <ul>
+            @foreach (var chat in Model)
+            {
+                <li class="chat-item" data-chat-id="@chat.Id" onclick="loadChatMessages('@chat.Id.ToString()')">
+                    @* <img src="@chat.ChatPhoto" alt="@chat.ChatName" class="chat-photo" /> *@
+                    <span class="chat-name">@chat.ChatName</span>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <!-- Chat Messages Section -->
+    <div class="chat-messages">
+        <div id="messages-container" class="messages-container">
+            <!-- Messages will be dynamically loaded here -->
+            @* @if (Model.SelectedChat != null)
+            {
+                foreach (var message in Model.SelectedChat.Messages)
+                {
+                    <div class="message @message.IsOwnMessage ? "own-message" : "other-message"">
+                        <span>@message.Content</span>
+                    </div>
+                }
+            } *@
+        </div>
+
+        <!-- Message Input Section -->
+        <div class="message-input">
+            <input id="message-text" type="text" placeholder="Type a message..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
+    <script>
+        var connection;
+        var conId;
+        var groupName;
+        $(document).ready(function () {
+       
+        // const connection = new signalR.HubConnectionBuilder().withUrl("/ChatHub").build();
+        connection = new signalR.HubConnectionBuilder().withUrl("/ChatHub").build()
+
+        connection.start();
+
+        // $("#sendButton").click(() => {
+        //     let message = $("#inputText").val();
+        //     connection.invoke("SendMessageAsync", message, groupName);
+        // });
+
+        connection.on("ReceiveMessage", message => {
+            $('#messages-container')/* .append(message + '<br/>'); */
+            // let chat = $("#chats");
+            // chat
+            .append(`<div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                <div>
+                    <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-warning">
+                        ${message}
+                    </p>
+                </div>
+                </div>`)
+        });
+            var state = $("#state");
+
+        connection.on("GetConnectionId", id => {
+            conId = id
+        });
+        // connection.on("UserJoined", id => {
+        //     state.css("background-color", "green");
+        //     state.css("color", "white");
+        //     state.html(`${id} Joined`);
+        //     state.fadeIn(2000, () => {
+        //         setTimeout(() => {
+        //             state.fadeOut(2000);
+        //         }, 2000)
+        //     });
+        // });
+
+        // connection.on("UserLeft", id => {
+        //     debugger;
+        //     state.css("background-color", "red");
+        //     state.css("color", "white");
+        //     state.html(`${id} Left`);
+        //     state.fadeIn(2000, () => {
+        //         setTimeout(() => {
+        //             state.fadeOut(2000);
+        //         }, 2000)
+        //     });
+        // });
+        
+    });
+        
+
+    function sendMessage() {
+        const messageText = $('#message-text').val();
+        if (!messageText.trim()) return;
+
+        // $("#sendButton").click(() => {
+        //     let message = $("#message-text").val();
+        //     debugger;
+        connection.invoke("SendMessageAsync", messageText, groupName);
+        // });
+        // $.ajax({
+        //     url: '/Chat/SendMessage',
+        //     method: 'POST',
+        //     data: {
+        //         chatId: '',
+        //         message: messageText
+        //     },
+        //     success: function () {
+        //         $('#message-text').val(''); // Clear input
+        //         loadChatMessages(''); // Reload messages
+        //     }
+        // });
+    }
+    function loadChatMessages(chatId) {
+        $('#messages-container').empty();
+        // var globalGroupName = chatId;
+        groupName = chatId;
+        let message = $("#inputText").val();
+        // connection.on("GetConnectionId", id => {
+        //     debugger;
+        connection.invoke("AddNewGroup", conId, chatId)
+        // });
+
+        // $.ajax({
+        //     url: `/Chat/GetMessages?chatId=${chatId}`,
+        //     method: 'GET',
+        //     success: function (data) {
+        //         $('#messages-container').html(data);
+        //     }// Fetch chat messages via AJAX and update the messages container
+
+        // });
+    }
+    </script>
+
+
+<style>
+    .chat-container {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .chat-list {
+        width: 25%;
+        border-right: 1px solid #ccc;
+        overflow-y: auto;
+    }
+
+    .chat-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        cursor: pointer;
+        background-color:aquamarine;
+    }
+
+    .chat-item:hover {
+        background-color: #f0f0f0;
+    }
+
+    .chat-photo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .chat-name {
+        font-size: 16px;
+    }
+
+    .chat-messages {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .messages-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .own-message {
+        background-color: #d1ffd1;
+        align-self: flex-end;
+    }
+
+    .other-message {
+        background-color: #f1f1f1;
+        align-self: flex-start;
+    }
+
+    .message-input {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+    }
+
+    #message-text {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        margin-left: 10px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+

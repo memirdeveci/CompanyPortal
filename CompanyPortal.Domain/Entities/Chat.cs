@@ -8,7 +8,7 @@ namespace CompanyPortal.Domain.Entities
         public string? ChatPhoto { get; set; }
 
         //Connections
-        public ICollection<AppUser>? Users { get; set; }
+        public List<AppUser>? Users { get; set; }
         public ICollection<ChatMessage>? Messages { get; set; }
     }
 }

@@ -41,7 +41,6 @@
         });
 
         connection.on("UserLeft", id => {
-            debugger;
             state.css("background-color", "red");
             state.css("color", "white");
             state.html(`${id} Left`);

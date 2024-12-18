@@ -16,5 +16,6 @@ namespace CompanyPortal.Application.Abstractions.User
         Task<ProfileDto> GetProfile(ClaimsPrincipal principal);
         Task<List<AppUser>> GetAllAppUsers();
         Task<List<AppUser>> GetAllAppUsersWithIds(List<string> Ids);
+        Task<List<AppUser>> GetAllAppUsersWoutCurrent(ClaimsPrincipal principal);
     }
 }

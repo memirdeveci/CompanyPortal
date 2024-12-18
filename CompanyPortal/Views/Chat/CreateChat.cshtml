@@ -2,7 +2,7 @@
 
 <h2>Kullanıcıları Seçin</h2>
 
-<form asp-action="CreateChat" asp-controller="Chat" method="post">
+<form asp-action="CreateChat" asp-controller="Chat" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="UserIds">Kullanıcılar</label>
         <select id="userSelect" asp-for="UserIds" class="form-control" multiple>
@@ -17,11 +17,16 @@
     </div>
 
     <div class="form-group">
-        <label for="chatName">Chat Adı</label>
-        <input type="text" id="chatName" name="Name" class="form-control" />
+        <label asp-for="ChatName">Chat Name</label>
+        <input asp-for="ChatName" id="chatName" class="form-control" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Chat Oluştur</button>
+    <div class="form-group">
+        <label asp-for="ChatPhotoFile">Group Photo</label>
+        <input asp-for="ChatPhotoFile" id="chatName" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
 </form>
 
 <style>
