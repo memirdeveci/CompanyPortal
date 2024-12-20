@@ -1,13 +1,30 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using CompanyPortal.Application.Abstractions.ChatMessage;
+using CompanyPortal.Application.Abstractions.ChatMessage.Dtos;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CompanyPortal.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessageAsync(string message, string groupName)
+        private readonly IChatMessageService _messageService;
+        public ChatHub(IChatMessageService messageService)
         {
+            _messageService = messageService;
+        }
+
+        public async Task SendMessageAsync(string message, string groupName, string userId)
+        {
+            var chatMessage = new ChatMessageDto 
+            {
+                Text = message,
+                UserId = Guid.Parse(userId),
+                ChatId = Guid.Parse(groupName)
+            };
+
+            await _messageService.AddMessage(chatMessage);
+
             //await Clients.All.SendAsync("ReceiveMessage",message);
-            await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
+            await Clients.Group(groupName).SendAsync("ReceiveMessage", message, userId);
         }
 
         public override async Task OnConnectedAsync()

@@ -1,0 +1,17 @@
+﻿@model List<ChatMessageDto>
+
+@{
+    Layout = null;
+}
+
+@foreach(var item in Model)
+{
+    var style = item.IsOwnMessage ? "justify-content-end" : "flex-start";
+    <div class="d-flex flex-row @style mb-4 pt-1">
+        <div id="over-wrap">
+            <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-warning">
+                @item.Text
+            </p>
+        </div>
+     </div>
+}

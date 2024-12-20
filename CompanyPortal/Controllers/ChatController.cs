@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using CompanyPortal.Application.Abstractions.Chat;
 using CompanyPortal.Application.Abstractions.Chat.Dtos;
+using CompanyPortal.Application.Abstractions.ChatMessage;
 using CompanyPortal.Application.Abstractions.User;
 using CompanyPortal.Domain.Entities;
 using CompanyPortal.ExternalServices.Interfaces;
+using CompanyPortal.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +18,17 @@ namespace CompanyPortal.Controllers
         private readonly IUserService _userService;
         private readonly IChatService _chatService;
         private readonly IPhotoService _photoService;
+        private readonly IChatMessageService _messageService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         public ChatController(IUserService userService, IMapper mapper, IChatService chatService,
-            IPhotoService photoService, UserManager<AppUser> userManager)
+            IPhotoService photoService, UserManager<AppUser> userManager, IChatMessageService messageService)
         {
             _userService = userService;
             _chatService = chatService;
             _photoService = photoService;
+            _messageService = messageService;
+            _userManager = userManager;
             _mapper = mapper;
         }
         public IActionResult Index()
@@ -34,8 +39,6 @@ namespace CompanyPortal.Controllers
         public async Task<IActionResult> CreateChat()
         {
             var users = await _userService.GetAllAppUsers();
-
-            
 
             var chat = new ChatDto { Users = users };
 
@@ -67,7 +70,11 @@ namespace CompanyPortal.Controllers
         {
             var chats = await _chatService.GetUserChats(User);
 
-            return View(chats);
+            var user = await _userManager.GetUserAsync(User);
+
+            var chatModel = new ChatModel { Chats = chats , User = user };
+
+            return View(chatModel ?? new ChatModel());
         }
 
         private async Task PrepareContent(ChatDto chat)
@@ -78,5 +85,16 @@ namespace CompanyPortal.Controllers
                 chat.ChatPhoto = imageResult.Url.ToString();
             }
         }
+
+        public async Task<IActionResult> GetMessages(Guid chatId)
+        {
+            var messages = await _messageService.GetAllChatMessages(chatId, User);
+
+            //var chatModel = new ChatModel { Chats = chats , User = user };   
+
+            return View(messages);
+        }
+
+
     }
 }

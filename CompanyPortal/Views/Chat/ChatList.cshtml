@@ -1,10 +1,10 @@
-﻿@model List<ChatDto>
+﻿@model ChatModel
 
 <div class="chat-container" style="height:70vh;">
     <!-- Sidebar for Chat List -->
     <div class="chat-list">
         <ul>
-            @foreach (var chat in Model)
+            @foreach (var chat in Model.Chats)
             {
                 <li class="chat-item" data-chat-id="@chat.Id" onclick="loadChatMessages('@chat.Id.ToString()')">
                     @* <img src="@chat.ChatPhoto" alt="@chat.ChatName" class="chat-photo" /> *@
@@ -39,8 +39,8 @@
 
     <script>
         var connection;
-        var conId;
-        var groupName;
+        var conId; //bağlandığı id
+        var groupName; //oda id
         $(document).ready(function () {
        
         // const connection = new signalR.HubConnectionBuilder().withUrl("/ChatHub").build();
@@ -53,19 +53,23 @@
         //     connection.invoke("SendMessageAsync", message, groupName);
         // });
 
-        connection.on("ReceiveMessage", message => {
+        connection.on("ReceiveMessage", (message, userId) => {
+            debugger;
+            var style = '@Model.User.Id' == userId ? "justify-content-end" : "flex-start";
+
             $('#messages-container')/* .append(message + '<br/>'); */
             // let chat = $("#chats");
             // chat
-            .append(`<div class="d-flex flex-row justify-content-end mb-4 pt-1">
-                <div>
-                    <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-warning">
+            .append(`<div class="d-flex flex-row ${style} mb-4 pt-1">
+               <div id="over-wrap">
+                   <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-warning">
                         ${message}
                     </p>
                 </div>
                 </div>`)
+            scrollToBottom();
         });
-            var state = $("#state");
+        var state = $("#state");
 
         connection.on("GetConnectionId", id => {
             conId = id
@@ -100,10 +104,13 @@
         const messageText = $('#message-text').val();
         if (!messageText.trim()) return;
 
+        $('#message-text').val("");
+
         // $("#sendButton").click(() => {
         //     let message = $("#message-text").val();
         //     debugger;
-        connection.invoke("SendMessageAsync", messageText, groupName);
+        
+        connection.invoke("SendMessageAsync", messageText, groupName, '@Model.User.Id');
         // });
         // $.ajax({
         //     url: '/Chat/SendMessage',
@@ -119,6 +126,15 @@
         // });
     }
     function loadChatMessages(chatId) {
+        const chatItems = document.querySelectorAll(".chat-item");
+        chatItems.forEach(item => item.classList.remove("selected"));
+
+        // Tıklanan elemanı işaretle
+        const selectedItem = document.querySelector(`.chat-item[data-chat-id='${chatId}']`);
+        if (selectedItem) {
+            selectedItem.classList.add("selected");
+        }
+
         $('#messages-container').empty();
         // var globalGroupName = chatId;
         groupName = chatId;
@@ -128,14 +144,18 @@
         connection.invoke("AddNewGroup", conId, chatId)
         // });
 
-        // $.ajax({
-        //     url: `/Chat/GetMessages?chatId=${chatId}`,
-        //     method: 'GET',
-        //     success: function (data) {
-        //         $('#messages-container').html(data);
-        //     }// Fetch chat messages via AJAX and update the messages container
+        $.ajax({
+            url: `/Chat/GetMessages?chatId=${chatId}`,
+            method: 'GET',
+            success: function (data) {
+                $('#messages-container').html(data);
+            }// Fetch chat messages via AJAX and update the messages container
 
-        // });
+        });
+    }
+    function scrollToBottom() {
+        const chatContainer = document.getElementById('messages-container');
+        chatContainer.scrollTop = chatContainer.scrollHeight;
     }
     </script>
 
@@ -158,7 +178,9 @@
         align-items: center;
         padding: 10px;
         cursor: pointer;
-        background-color:aquamarine;
+        background-color:white;
+        border-style: solid;
+        border-width:1px;
     }
 
     .chat-item:hover {
@@ -230,6 +252,22 @@
 
     button:hover {
         background-color: #0056b3;
+    }
+
+    p {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+         /* Mesajların genişliğini sınırlayın */
+        white-space: normal; /* Uzun kelimeler bir sonraki satıra geçsin */
+    }
+
+    #over-wrap {
+        max-width: 80%;
+    }
+    
+    .chat-item.selected {
+        background-color: #007bff;
+        color: white;
     }
 </style>
 
