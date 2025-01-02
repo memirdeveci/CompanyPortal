@@ -16,6 +16,8 @@ namespace CompanyPortal.Application.Abstractions.Post.Dtos
         public int LikeCount { get; set; } = 0;
         public int DislikeCount { get; set; } = 0;
         public int CommentCount { get; set; } = 0;
+        public bool isLiked { get; set; } = false;
+        public bool isDisliked { get; set; } = false;
 
         //Connections
         public Guid UserId { get; set; }

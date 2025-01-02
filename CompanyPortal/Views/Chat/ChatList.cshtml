@@ -17,16 +17,7 @@
     <!-- Chat Messages Section -->
     <div class="chat-messages">
         <div id="messages-container" class="messages-container">
-            <!-- Messages will be dynamically loaded here -->
-            @* @if (Model.SelectedChat != null)
-            {
-                foreach (var message in Model.SelectedChat.Messages)
-                {
-                    <div class="message @message.IsOwnMessage ? "own-message" : "other-message"">
-                        <span>@message.Content</span>
-                    </div>
-                }
-            } *@
+
         </div>
 
         <!-- Message Input Section -->
@@ -106,25 +97,8 @@
         if (!messageText.trim()) return;
 
         $('#message-text').val("");
-
-        // $("#sendButton").click(() => {
-        //     let message = $("#message-text").val();
-        //     debugger;
         
         connection.invoke("SendMessageAsync", messageText, groupName, '@Model.User.Id');
-        // });
-        // $.ajax({
-        //     url: '/Chat/SendMessage',
-        //     method: 'POST',
-        //     data: {
-        //         chatId: '',
-        //         message: messageText
-        //     },
-        //     success: function () {
-        //         $('#message-text').val(''); // Clear input
-        //         loadChatMessages(''); // Reload messages
-        //     }
-        // });
     }
     function loadChatMessages(chatId) {
         const chatItems = document.querySelectorAll(".chat-item");
@@ -158,58 +132,68 @@
         const chatContainer = document.getElementById('messages-container');
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
-    </script>
+</script>
 
 
 <style>
     .chat-container {
         display: flex;
+        width: 90%;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        background-color: #f8f9fa;
+        display: flex;
         height: 100vh;
         overflow: hidden;
+        border-radius: 10px; /* Chat container için border-radius ekledim */
     }
 
+    /* Chat List (Sidebar) */
     .chat-list {
-        width: 25%;
-        border-right: 1px solid #ccc;
+        width: 300px; /* Fixed width */
+        background-color: #e9ecef;
         overflow-y: auto;
+        border-right: 2px solid #ccc;
     }
 
     .chat-item {
         display: flex;
         align-items: center;
-        padding: 10px;
+        padding: 15px;
         cursor: pointer;
-        background-color:white;
-        border-style: solid;
-        border-width:1px;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.3s;
     }
 
-    .chat-item:hover {
-        background-color: #f0f0f0;
-    }
+        .chat-item:hover {
+            background-color: #d1ecf1;
+        }
 
-    .chat-photo {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 10px;
-    }
+        .chat-item.selected {
+            background-color: #007bff;
+            color: white;
+        }
 
     .chat-name {
         font-size: 16px;
+        font-weight: bold;
     }
 
+    /* Chat Messages Section */
     .chat-messages {
-        flex: 1;
+        flex: 1; /* Takes up the remaining space */
         display: flex;
         flex-direction: column;
-        overflow: hidden;
+        background-color: white;
+        overflow-y: auto;
     }
 
     .messages-container {
         flex: 1;
         overflow-y: auto;
-        padding: 10px;
+        padding: 20px;
+        background-color: #f8f9fa;
     }
 
     .message {
@@ -219,53 +203,65 @@
     }
 
     .own-message {
-        background-color: #d1ffd1;
+        background-color: #28a745;
+        color: white;
         align-self: flex-end;
     }
 
     .other-message {
-        background-color: #f1f1f1;
+        background-color: #007bff;
+        color: white;
         align-self: flex-start;
     }
 
+    /* Message Input Section */
     .message-input {
         display: flex;
-        padding: 10px;
-        border-top: 1px solid #ccc;
+        padding: 15px;
+        border-top: 2px solid #ccc;
+        background-color: #e9ecef;
     }
 
     #message-text {
         flex: 1;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        padding: 12px;
+        border: none;
+        border-radius: 20px;
+        font-size: 16px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     button {
-        margin-left: 10px;
-        padding: 10px 20px;
+        margin-left: 15px;
+        padding: 12px 20px;
         background-color: #007bff;
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 20px;
+        font-size: 16px;
         cursor: pointer;
     }
 
-    button:hover {
-        background-color: #0056b3;
-    }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
 
     p {
         word-wrap: break-word;
         overflow-wrap: break-word;
-         /* Mesajların genişliğini sınırlayın */
-        white-space: normal; /* Uzun kelimeler bir sonraki satıra geçsin */
     }
 
     #over-wrap {
-        max-width: 80%;
+        max-width: 60%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
-    
+
     .chat-item.selected {
         background-color: #007bff;
         color: white;

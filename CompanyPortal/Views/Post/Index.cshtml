@@ -7,10 +7,17 @@
     
 }
 
-<div class="addButton" style="text-align:center;">
+@* <div class="addButton" style="text-align:center;">
     <a asp-action="CreatePost" asp-controller="Post" style="text-decoration:none;background:black;padding:5px;font-size:20px;"><span style="color:white">Create Post</span></a>
+</div> *@
+
+<div class="addButton">
+    <a asp-action="CreatePost" asp-controller="Post">
+        <span>Create Post</span>
+    </a>
 </div>
-<h1 style="text-align:center;color:white;margin-top:40px;">Posts</h1>
+
+@* <h1 style="text-align:center;color:white;margin-top:40px;">Posts</h1> *@
 @foreach (var post in Model)
 {
 
@@ -62,11 +69,28 @@
         <div class="post-stats">
             <div class="post-stat">
                 <span id="likeCount_@divCount">@post.LikeCount</span>
-                <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','L','@divCount')"><span id="likeIcon_@divCount"><i class='bi bi-hand-thumbs-up'></i></span></button>
+                <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','L','@divCount')"><span id="likeIcon_@divCount">
+                        @if (post.isLiked)
+                        {
+                            <i class='bi bi-hand-thumbs-up-fill'></i>
+                        }
+                        else
+                        {
+                            <i class='bi bi-hand-thumbs-up'></i>
+                        }
+                    </span></button>
             </div>
             <div class="post-stat">
                 <span id="dislikeCount_@divCount">@post.DislikeCount</span>
-                <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','D','@divCount')"><span id="dislikeIcon_@divCount"><i class='bi bi-hand-thumbs-down'></i></span></button>
+                <button class="likeDislikeButtonStyle" onclick="fnPostLike('@post.Id','D','@divCount')"><span id="dislikeIcon_@divCount">
+                        @if (post.isDisliked) {
+                            <i class='bi bi-hand-thumbs-down-fill'></i>
+                        }
+                        else
+                        {
+                            <i class='bi bi-hand-thumbs-down'></i>
+                        }
+                    </span></button>
             </div>
             <div class="post-stat">
                 <span id="commCount_@divCount">@post.CommentCount</span>
@@ -81,7 +105,7 @@
           <div class="modal-dialog modal-dialog-scrollable" style="padding-bottom:2em;">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Yorumlar</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Comments</h5>
                 <button type="button" onclick="getCommentCount()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body" id="modal-body" style="padding:0;">
@@ -152,3 +176,37 @@
     });
 }
 </script>
+
+<style>
+    /* Buton Konteyneri */
+    .addButton {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+        /* Buton Stili */
+        .addButton a {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #000; /* Siyah arka plan */
+            color: #fff; /* Beyaz metin */
+            padding: 10px 20px; /* Buton boyutu */
+            font-size: 20px; /* Yazı boyutu */
+            font-weight: bold; /* Kalın yazı */
+            border-radius: 8px; /* Köşeleri yuvarlat */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+        }
+
+            /* Hover Durumu */
+            .addButton a:hover {
+                background-color: #333; /* Daha açık siyah */
+                box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Gölgeyi büyüt */
+            }
+
+            /* Aktif Durumu */
+            .addButton a:active {
+                background-color: #555; /* Daha açık siyah */
+                box-shadow: none; /* Gölgeyi kaldır */
+            }
+</style>

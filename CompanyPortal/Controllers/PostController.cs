@@ -1,8 +1,10 @@
 ﻿using CloudinaryDotNet.Actions;
 using CompanyPortal.Application.Abstractions.Post;
 using CompanyPortal.Application.Abstractions.Post.Dtos;
+using CompanyPortal.Domain.Entities;
 using CompanyPortal.ExternalServices.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyPortal.Controllers
@@ -12,16 +14,27 @@ namespace CompanyPortal.Controllers
     {
         private readonly IPostService _postService;
         private readonly IPhotoService _photoService;
+        private readonly UserManager<AppUser> _userManager;
 
-        public PostController(IPostService postService, IPhotoService photoService)
+        public PostController(IPostService postService, IPhotoService photoService, UserManager<AppUser> userManager)
         {
             _postService = postService;
             _photoService = photoService;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
             var posts = await _postService.GetAllPosts();
             posts.Sort((x, y) => DateTime.Compare(y.CreatedDate, x.CreatedDate));
+
+            var user = await _userManager.GetUserAsync(User);
+
+            foreach (var item in posts)
+            {
+                item.isLiked = item.Likes.Any(x => x.User == user && x.LikeType == 'L');
+                item.isDisliked = item.Likes.Any(x => x.User == user && x.LikeType == 'D');
+            }
+
             return View(posts);
         }
 

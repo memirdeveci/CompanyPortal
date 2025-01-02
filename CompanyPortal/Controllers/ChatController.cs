@@ -38,7 +38,11 @@ namespace CompanyPortal.Controllers
 
         public async Task<IActionResult> CreateChat()
         {
+            var currUser = await _userManager.GetUserAsync(User);
+
             var users = await _userService.GetAllAppUsers();
+
+            users = users.Where(x => x != currUser).ToList();
 
             var chat = new ChatDto { Users = users };
 
@@ -63,7 +67,7 @@ namespace CompanyPortal.Controllers
 
             await _chatService.AddChat(chat, User);
 
-            return View(chat);
+            return RedirectToAction("ChatList");
         }
 
         public async Task<IActionResult> ChatList()

@@ -96,6 +96,7 @@ namespace CompanyPortal.Application.Post
             {
                 var posts = await _postReadRepository.GetQueryable()
                                                      .Include(x => x.User)
+                                                     .Include(x => x.Likes)
                                                      .Where(x => x.Status)
                                                      .ToListAsync();
 
