@@ -21,8 +21,9 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-nav flex-grow-1 d-flex justify-content-around">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (_signInManager.IsSignedIn(User)) { 
+                    <ul class="navbar-nav flex-grow-1 d-flex">
+                        @if (_signInManager.IsSignedIn(User))
+                        {
                             <li class="nav-item" style="margin:15px;">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">Posts</a>
                             </li>
@@ -33,7 +34,10 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="CreateChat">Create Chat</a>
                             </li>
                             <li class="nav-item" style="margin:15px;">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="ChatList">Chats</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="ChatList">My Chats</a>
+                            </li>
+                            <li class="nav-item" style="margin:15px; margin-left: auto;">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Logout</a>
                             </li>
                         }
                         else
@@ -44,6 +48,8 @@
                         }
                     </ul>
                 </div>
+
+
             </div>
         </nav>
     </header>
